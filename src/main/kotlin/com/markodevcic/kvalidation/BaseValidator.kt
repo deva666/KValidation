@@ -33,7 +33,7 @@ abstract class BaseValidator<T>(private val consumer: T) where T : Any {
             val validators = context.validators
             val value = context.valueFactory(consumer)
             validators.forEach { validator ->
-                if (validator.precondition.invoke(consumer) && !validator.isValid(value)) {
+                if (validator.precondition.invoke(consumer)  && !validator.isValid(value)) {
                     result.validationErrors.add(ValidationError("Fail", validator.errorLevel))
                     if (strategyCopy == ValidationStrategy.STOP_ON_FIRST) {
                         return result

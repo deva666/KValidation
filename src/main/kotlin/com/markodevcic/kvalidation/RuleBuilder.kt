@@ -24,10 +24,10 @@ class RuleBuilder<T, TFor> {
         return OptionsBuilder(propertyContext, currentValidator!!)
     }
 
-    fun custom(predicate: (TFor) -> Boolean): OptionsBuilder<T, TFor> {
+    fun custom(predicate: (TFor?) -> Boolean): OptionsBuilder<T, TFor> {
         val validator = object : ValidatorBase(){
             override fun isValid(result: Any?): Boolean {
-                return predicate.invoke(result as TFor)
+                return predicate.invoke(result as TFor?)
             }
         }
         setValidator(validator)

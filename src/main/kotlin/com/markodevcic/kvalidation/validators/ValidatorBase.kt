@@ -1,16 +1,14 @@
 package com.markodevcic.kvalidation.validators
 
-import com.markodevcic.kvalidation.validators.Validator
 import com.markodevcic.kvalidation.errors.ErrorLevel
 
 abstract class ValidatorBase : Validator {
-    override fun isValid(result: Any?): Boolean {
-        return true
-    }
 
+    protected var _precondition: (Any) -> Boolean = { true }
     override var precondition: (Any) -> Boolean
-        get() = { true }
+        get() = _precondition
         set(value) {
+            _precondition = value
         }
 
     override var errorMessage: String?
@@ -28,8 +26,10 @@ abstract class ValidatorBase : Validator {
         set(value) {
         }
 
+    protected var _errorLevel = ErrorLevel.ERROR
     override var errorLevel: ErrorLevel
-        get() = ErrorLevel.ERROR
+        get() = _errorLevel
         set(value) {
+            _errorLevel = value
         }
 }

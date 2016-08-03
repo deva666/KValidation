@@ -22,8 +22,8 @@ class OptionsBuilder<T, TFor>(private val propertyContext: PropertyContext<T, TF
     }
 
 
-    fun whenValue(precondition: (T) -> Boolean): OptionsBuilder<T, TFor> {
-        currentValidator.precondition = { precondition.invoke(it as T) }
+    fun whenIs(precondition: (T) -> Boolean): OptionsBuilder<T, TFor> {
+        currentValidator.precondition = { c -> precondition.invoke(c as T) }
         return this
     }
 
