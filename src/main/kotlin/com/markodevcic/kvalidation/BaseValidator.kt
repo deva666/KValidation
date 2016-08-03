@@ -43,4 +43,8 @@ abstract class BaseValidator<T>(private val consumer: T) where T : Any {
         }
         return result
     }
+
+    fun validateAsync(callback: (ValidationResult) -> Unit) {
+
+    }
 }

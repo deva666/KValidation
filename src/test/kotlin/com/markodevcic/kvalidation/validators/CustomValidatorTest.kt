@@ -12,7 +12,7 @@ class CustomValidatorTest {
         val validator = TestObjectValidator(testObject)
 
         validator.newRule { t -> t.position }
-        .custom { v -> v == 10 }
+        .mustBe { v -> v == 10 }
 
         testObject.position = 1
         val failResult = validator.validate()

@@ -3,14 +3,14 @@ package com.markodevcic.kvalidation
 import org.junit.Assert
 import org.junit.Test
 
-class PredicateTests {
+class PreconditionTests {
     @Test
     fun test1PredicateOnRule() {
         val testObject = TestObject()
         val validator = TestObjectValidator(testObject)
 
         validator.newRule { t -> t.name }
-                .custom { v -> v!!.length == 5 }
+                .mustBe { v -> v!!.length == 5 }
                 .whenIs { t -> t.name != null }
 
         testObject.name = null
