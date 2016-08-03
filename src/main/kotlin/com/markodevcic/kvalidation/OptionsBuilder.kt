@@ -4,7 +4,7 @@ import com.markodevcic.kvalidation.errors.ErrorLevel
 import com.markodevcic.kvalidation.validators.Validator
 
 @Suppress("UNCHECKED_CAST")
-class OptionsBuilder<T, TFor>(private val valueContext: ValueContext<T, TFor>,
+class OptionsBuilder<T, TFor>(private val propertyContext: PropertyContext<T, TFor>,
                               private val currentValidator: Validator) {
 
     fun errorMessage(message: String): OptionsBuilder<T, TFor> {
@@ -33,6 +33,6 @@ class OptionsBuilder<T, TFor>(private val valueContext: ValueContext<T, TFor>,
     }
 
     fun and(): RuleBuilder<T, TFor> {
-        return RuleBuilder(valueContext)
+        return RuleBuilder(propertyContext)
     }
 }

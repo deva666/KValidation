@@ -7,21 +7,21 @@ import com.markodevcic.kvalidation.validators.ValidatorBase
 
 @Suppress("UNCHECKED_CAST")
 class RuleBuilder<T, TFor> {
-    private val valueContext: ValueContext<T, TFor>
+    private val propertyContext: PropertyContext<T, TFor>
     private var currentValidator: Validator? = null
 
-    internal constructor(valueContext: ValueContext<T, TFor>) {
-        this.valueContext = valueContext
+    internal constructor(propertyContext: PropertyContext<T, TFor>) {
+        this.propertyContext = propertyContext
     }
 
     private fun setValidator(validator: Validator) {
         currentValidator = validator
-        valueContext.validators.add(validator)
+        propertyContext.validators.add(validator)
     }
 
     fun custom(validator: Validator): OptionsBuilder<T, TFor> {
         setValidator(validator)
-        return OptionsBuilder(valueContext, currentValidator!!)
+        return OptionsBuilder(propertyContext, currentValidator!!)
     }
 
     fun custom(predicate: (TFor) -> Boolean): OptionsBuilder<T, TFor> {
@@ -31,26 +31,26 @@ class RuleBuilder<T, TFor> {
             }
         }
         setValidator(validator)
-        return OptionsBuilder(valueContext, currentValidator!!)
+        return OptionsBuilder(propertyContext, currentValidator!!)
     }
 
     fun nonNull(): OptionsBuilder<T, TFor> {
         setValidator(NonNullValidator())
-        return OptionsBuilder(valueContext, currentValidator!!)
+        return OptionsBuilder(propertyContext, currentValidator!!)
     }
 
     fun isNull(): OptionsBuilder<T, TFor> {
         setValidator(NullValidator())
-        return OptionsBuilder(valueContext, currentValidator!!)
+        return OptionsBuilder(propertyContext, currentValidator!!)
     }
 
     fun equal(other: TFor): OptionsBuilder<T, TFor> {
 
-        return OptionsBuilder(valueContext, currentValidator!!)
+        return OptionsBuilder(propertyContext, currentValidator!!)
     }
 
     fun notEqual(other: TFor): OptionsBuilder<T, TFor> {
 
-        return OptionsBuilder(valueContext, currentValidator!!)
+        return OptionsBuilder(propertyContext, currentValidator!!)
     }
 }

@@ -5,14 +5,14 @@ import java.util.*
 
 @Suppress("UNCHECKED_CAST")
 abstract class BaseValidator<T>(private val consumer: T) where T : Any {
-    private val valueContexts: MutableList<ValueContext<T, *>> = ArrayList()
+    private val propertyContexts: MutableList<PropertyContext<T, *>> = ArrayList()
     private val consumerClass = consumer.javaClass
-    private val valueMap = HashMap<Class<*>, ValueContext<T, *>>()
+    private val valueMap = HashMap<Class<*>, PropertyContext<T, *>>()
 
     var strategy = ValidationStrategy.FULL
 
     fun <TFor> newRule(valueFactory: (T) -> TFor): RuleBuilder<T, TFor> {
-        val valueContext = ValueContext(valueFactory)
+        val propertyContext = PropertyContext(valueFactory)
         val method = valueFactory.javaClass
                 .declaredMethods
                 .filter { m ->
@@ -21,15 +21,15 @@ abstract class BaseValidator<T>(private val consumer: T) where T : Any {
                             && m.name == "invoke"
                 }.single()
         val valueClass = method.returnType as Class<TFor>
-        valueContext.clazz = valueClass
-        valueContexts.add(valueContext)
-        return RuleBuilder(valueContext)
+        propertyContext.clazz = valueClass
+        propertyContexts.add(propertyContext)
+        return RuleBuilder(propertyContext)
     }
 
     fun validate(): ValidationResult {
         val strategyCopy = strategy
         val result = ValidationResult()
-        valueContexts.forEach { context ->
+        propertyContexts.forEach { context ->
             val validators = context.validators
             val value = context.valueFactory(consumer)
             validators.forEach { validator ->

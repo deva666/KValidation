@@ -1,5 +1,5 @@
 package com.markodevcic.kvalidation
 
-class ValidatorConfig {
+class ValidatorConfig(val strategy: ValidationStrategy, val ignoreWarnings: Boolean) {
 
 }
