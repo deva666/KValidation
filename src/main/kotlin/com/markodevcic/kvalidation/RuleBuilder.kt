@@ -64,6 +64,11 @@ class RuleBuilder<T, TFor>(private val valueContext: ValueContext<T, TFor>) {
         return this
     }
 
+    fun gt(other: Number): RuleBuilder<T, TFor> {
+        setValidator(GreaterThanValidator(other))
+        return this
+    }
+
     fun errorMessage(message: String): RuleBuilder<T, TFor> {
         val builder = CustomMessageBuilder(message)
         currentValidator?.messageBuilder = builder
