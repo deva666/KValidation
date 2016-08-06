@@ -5,8 +5,7 @@ import com.markodevcic.kvalidation.messages.MessageBuilder
 
 interface Validator{
     fun isValid(result: Any?): Boolean
-    var precondition: (Any) -> Boolean
-    var errorMessage: String?
+    var precondition: ((Any) -> Boolean)?
     var messageBuilder: MessageBuilder?
     var errorCode: Int?
     var errorLevel: ErrorLevel

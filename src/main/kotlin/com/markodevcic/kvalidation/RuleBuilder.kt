@@ -1,6 +1,7 @@
 package com.markodevcic.kvalidation
 
 import com.markodevcic.kvalidation.errors.ErrorLevel
+import com.markodevcic.kvalidation.messages.CustomMessageBuilder
 import com.markodevcic.kvalidation.messages.MessageBuilder
 import com.markodevcic.kvalidation.validators.*
 
@@ -59,7 +60,8 @@ class RuleBuilder<T, TFor>(private val valueContext: ValueContext<T, TFor>) {
     }
 
     fun errorMessage(message: String): RuleBuilder<T, TFor> {
-        currentValidator?.errorMessage = message
+        val builder = CustomMessageBuilder(message)
+        currentValidator?.messageBuilder = builder
         return this
     }
 

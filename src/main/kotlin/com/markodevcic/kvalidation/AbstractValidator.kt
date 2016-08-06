@@ -27,7 +27,8 @@ abstract class AbstractValidator<T>(private val consumer: T) where T : Any {
             val validators = context.validators
             val value = context.valueFactory(consumer)
             validators.forEach { validator ->
-                if (validator.precondition.invoke(consumer) && !validator.isValid(value)) {
+                if ((validator.precondition != null && validator.precondition!!.invoke(consumer))
+                        && !validator.isValid(value)) {
                     result.validationErrors.add(ValidationError(validator.messageBuilder?.getErrorMessage()
                             ?: DefaultMessageBuilder(getValueClass(valueFactory)).getErrorMessage(), validator.errorLevel))
                     if (strategyCopy == ValidationStrategy.STOP_ON_FIRST) {
@@ -39,6 +40,7 @@ abstract class AbstractValidator<T>(private val consumer: T) where T : Any {
         return result
     }
 
+    @Suppress("UNCHECKED_CAST")
     private fun <TFor> getValueClass(valueFactory: (T) -> TFor): Class<TFor> {
         val method = valueFactory.javaClass
                 .declaredMethods

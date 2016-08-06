@@ -5,16 +5,11 @@ import com.markodevcic.kvalidation.messages.MessageBuilder
 
 abstract class ValidatorBase : Validator {
 
-    protected var _precondition: (Any) -> Boolean = { true }
-    override var precondition: (Any) -> Boolean
+    protected var _precondition: ((Any) -> Boolean)? = null
+    override var precondition: ((Any) -> Boolean)?
         get() = _precondition
         set(value) {
             _precondition = value
-        }
-
-    override var errorMessage: String?
-        get() = throw UnsupportedOperationException()
-        set(value) {
         }
 
     protected var _messageBuilder: MessageBuilder? = null
@@ -24,9 +19,11 @@ abstract class ValidatorBase : Validator {
             _messageBuilder = value
         }
 
+    private var _errorCode: Int? = null
     override var errorCode: Int?
-        get() = throw UnsupportedOperationException()
+        get() = _errorCode
         set(value) {
+            _errorCode = value
         }
 
     protected var _errorLevel = ErrorLevel.ERROR

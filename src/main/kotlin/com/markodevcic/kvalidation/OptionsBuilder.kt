@@ -1,13 +1,15 @@
 package com.markodevcic.kvalidation
 
 import com.markodevcic.kvalidation.errors.ErrorLevel
+import com.markodevcic.kvalidation.messages.CustomMessageBuilder
 import com.markodevcic.kvalidation.messages.MessageBuilder
 
 @Suppress("UNCHECKED_CAST")
 class OptionsBuilder<T, TFor>(private val valueContext: ValueContext<T, TFor>) {
 
     fun errorMessage(message: String): OptionsBuilder<T, TFor> {
-        valueContext.validators.forEach { v -> v.errorMessage = message }
+        val builder = CustomMessageBuilder(message)
+        valueContext.validators.forEach { v -> v.messageBuilder = builder}
         return this
     }
 
