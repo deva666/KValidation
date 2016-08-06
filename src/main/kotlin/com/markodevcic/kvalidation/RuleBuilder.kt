@@ -8,7 +8,6 @@ import com.markodevcic.kvalidation.validators.*
 class RuleBuilder<T, TFor> {
     private val valueContext: ValueContext<T, TFor>
     private var currentValidator: Validator? = null
-    private var setOnCurrent = true
 
     internal constructor(valueContext: ValueContext<T, TFor>) {
         this.valueContext = valueContext
@@ -66,52 +65,31 @@ class RuleBuilder<T, TFor> {
 
     //options
     fun errorMessage(message: String): RuleBuilder<T, TFor> {
-        if (setOnCurrent) {
-            currentValidator?.errorMessage = message
-        } else {
-            valueContext.validators.forEach { v -> v.errorMessage = message }
-        }
+        currentValidator?.errorMessage = message
         return this
     }
 
     fun errorMessage(messageBuilder: MessageBuilder): RuleBuilder<T, TFor> {
-        if (setOnCurrent) {
-            currentValidator?.messageBuilder = messageBuilder
-        } else {
-            valueContext.validators.forEach { v -> v.messageBuilder = messageBuilder }
-        }
+        currentValidator?.messageBuilder = messageBuilder
         return this
     }
 
     fun errorCode(code: Int): RuleBuilder<T, TFor> {
-        if (setOnCurrent) {
-            currentValidator?.errorCode = code
-        } else {
-            valueContext.validators.forEach { v -> v.errorCode = code }
-        }
+        currentValidator?.errorCode = code
         return this
     }
 
     fun whenIs(precondition: (T) -> Boolean): RuleBuilder<T, TFor> {
-        if (setOnCurrent) {
-            currentValidator?.precondition = { c -> precondition.invoke(c as T) }
-        } else {
-            valueContext.validators.forEach { v -> v.precondition = { c -> precondition.invoke(c as T) } }
-        }
+        currentValidator?.precondition = { c -> precondition.invoke(c as T) }
         return this
     }
 
     fun errorLevel(errorLevel: ErrorLevel): RuleBuilder<T, TFor> {
-        if (setOnCurrent) {
-            currentValidator?.errorLevel = errorLevel
-        } else {
-            valueContext.validators.forEach { v -> v.errorLevel = errorLevel }
-        }
+        currentValidator?.errorLevel = errorLevel
         return this
     }
 
-    fun onAll(): RuleBuilder<T, TFor> {
-        setOnCurrent = false
-        return this
+    fun onAll(): OptionsBuilder<T, TFor> {
+        return OptionsBuilder(valueContext)
     }
 }
