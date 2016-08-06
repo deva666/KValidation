@@ -32,4 +32,8 @@ abstract class ValidatorBase : Validator {
         set(value) {
             _errorLevel = value
         }
+
+    override fun toString(): String {
+        return "Custom validator"
+    }
 }

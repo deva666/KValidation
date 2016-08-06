@@ -4,4 +4,8 @@ class EqualValidator(private val other: Any) : ValidatorBase (){
     override fun isValid(result: Any?): Boolean {
         return result!!.equals(other)
     }
+
+    override fun toString(): String {
+        return "Equality validator, expected equal to: ${other.toString()}"
+    }
 }

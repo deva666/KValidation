@@ -6,7 +6,7 @@ import com.markodevcic.kvalidation.messages.DefaultMessageBuilder
 import java.util.*
 import java.util.concurrent.Executor
 
-abstract class AbstractValidator<T>(private val consumer: T) where T : Any {
+abstract class AbstractValidator<T>(private val validee: T) where T : Any {
     private val valueContexts: MutableList<ValueContext<T, *>> = ArrayList()
     private lateinit var valueFactory: (T) -> Any?
     private val valueMap = HashMap<Class<*>, ValueContext<T, *>>()
@@ -25,12 +25,12 @@ abstract class AbstractValidator<T>(private val consumer: T) where T : Any {
         val result = ValidationResult()
         valueContexts.forEach { context ->
             val validators = context.validators
-            val value = context.valueFactory(consumer)
+            val value = context.valueFactory(validee)
             validators.forEach { validator ->
-                if ((validator.precondition != null && validator.precondition!!.invoke(consumer))
-                        && !validator.isValid(value)) {
+                if (validator.precondition?.invoke(validee) ?: true && !validator.isValid(value)) {
                     result.validationErrors.add(ValidationError(validator.messageBuilder?.getErrorMessage()
-                            ?: DefaultMessageBuilder(getValueClass(valueFactory)).getErrorMessage(), validator.errorLevel))
+                            ?: DefaultMessageBuilder(getValueClass(valueFactory), validator).getErrorMessage()
+                            , validator.errorLevel))
                     if (strategyCopy == ValidationStrategy.STOP_ON_FIRST) {
                         return result
                     }
@@ -46,7 +46,7 @@ abstract class AbstractValidator<T>(private val consumer: T) where T : Any {
                 .declaredMethods
                 .filter { m ->
                     m.parameterTypes.count() == 1
-                            && m.parameterTypes[0] == consumer.javaClass
+                            && m.parameterTypes[0] == validee.javaClass
                             && m.name == "invoke"
                 }.single()
         val valueClass = method.returnType as Class<TFor>

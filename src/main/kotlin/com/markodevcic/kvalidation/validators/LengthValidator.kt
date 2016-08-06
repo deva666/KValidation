@@ -12,4 +12,8 @@ class LengthValidator(private val min: Int, private val max: Int) : ValidatorBas
         val text = result.toString()
         return text.length >= min && text.length <= max
     }
+
+    override fun toString(): String {
+        return "Length validator, expected length between: $min - $max"
+    }
 }
