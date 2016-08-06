@@ -1,4 +1,4 @@
 package com.markodevcic.kvalidation
 
-class TestObjectValidator(private val testObject: TestObject) : BaseValidator<TestObject>(testObject) {
+class TestObjectValidator(private val testObject: TestObject) : AbstractValidator<TestObject>(testObject) {
 }

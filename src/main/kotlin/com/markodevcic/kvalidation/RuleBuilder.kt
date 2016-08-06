@@ -5,13 +5,8 @@ import com.markodevcic.kvalidation.messages.MessageBuilder
 import com.markodevcic.kvalidation.validators.*
 
 @Suppress("UNCHECKED_CAST")
-class RuleBuilder<T, TFor> {
-    private val valueContext: ValueContext<T, TFor>
+class RuleBuilder<T, TFor>(private val valueContext: ValueContext<T, TFor>) {
     private var currentValidator: Validator? = null
-
-    internal constructor(valueContext: ValueContext<T, TFor>) {
-        this.valueContext = valueContext
-    }
 
     private fun setValidator(validator: Validator) {
         currentValidator = validator
@@ -63,7 +58,6 @@ class RuleBuilder<T, TFor> {
         return this
     }
 
-    //options
     fun errorMessage(message: String): RuleBuilder<T, TFor> {
         currentValidator?.errorMessage = message
         return this

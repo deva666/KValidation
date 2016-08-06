@@ -21,8 +21,8 @@ class OptionsBuilder<T, TFor>(private val valueContext: ValueContext<T, TFor>) {
         return this
     }
 
-    fun whenIs(precondition: (T) -> Boolean): OptionsBuilder<T, TFor> {
-        valueContext.validators.forEach { v -> v.precondition = { c -> precondition.invoke(c as T)} }
+    fun whenIs(condition: (T) -> Boolean): OptionsBuilder<T, TFor> {
+        valueContext.validators.forEach { v -> v.precondition = { c -> condition.invoke(c as T)} }
         return this
     }
 
