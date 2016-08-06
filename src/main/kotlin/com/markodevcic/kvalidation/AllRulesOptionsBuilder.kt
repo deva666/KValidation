@@ -5,30 +5,30 @@ import com.markodevcic.kvalidation.messages.CustomMessageBuilder
 import com.markodevcic.kvalidation.messages.MessageBuilder
 
 @Suppress("UNCHECKED_CAST")
-class OptionsBuilder<T, TFor>(private val valueContext: ValueContext<T, TFor>) {
+class AllRulesOptionsBuilder<T, TFor>(private val valueContext: ValueContext<T, TFor>) {
 
-    fun errorMessage(message: String): OptionsBuilder<T, TFor> {
+    fun errorMessage(message: String): AllRulesOptionsBuilder<T, TFor> {
         val builder = CustomMessageBuilder(message)
         valueContext.validators.forEach { v -> v.messageBuilder = builder}
         return this
     }
 
-    fun errorMessage(messageBuilder: MessageBuilder): OptionsBuilder<T, TFor> {
+    fun errorMessage(messageBuilder: MessageBuilder): AllRulesOptionsBuilder<T, TFor> {
         valueContext.validators.forEach { v -> v.messageBuilder = messageBuilder }
         return this
     }
 
-    fun errorCode(code: Int): OptionsBuilder<T, TFor> {
+    fun errorCode(code: Int): AllRulesOptionsBuilder<T, TFor> {
         valueContext.validators.forEach { v -> v.errorCode = code }
         return this
     }
 
-    fun whenIs(condition: (T) -> Boolean): OptionsBuilder<T, TFor> {
+    fun whenIs(condition: (T) -> Boolean): AllRulesOptionsBuilder<T, TFor> {
         valueContext.validators.forEach { v -> v.precondition = { c -> condition.invoke(c as T)} }
         return this
     }
 
-    fun errorLevel(errorLevel: ErrorLevel): OptionsBuilder<T, TFor> {
+    fun errorLevel(errorLevel: ErrorLevel): AllRulesOptionsBuilder<T, TFor> {
         valueContext.validators.forEach { v -> v.errorLevel = errorLevel }
         return this
     }

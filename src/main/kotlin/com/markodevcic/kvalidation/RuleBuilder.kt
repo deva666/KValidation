@@ -85,7 +85,7 @@ class RuleBuilder<T, TFor>(private val valueContext: ValueContext<T, TFor>) {
         return this
     }
 
-    fun onAll(): OptionsBuilder<T, TFor> {
-        return OptionsBuilder(valueContext)
+    fun onAll(): AllRulesOptionsBuilder<T, TFor> {
+        return AllRulesOptionsBuilder(valueContext)
     }
 }
