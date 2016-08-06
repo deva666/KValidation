@@ -2,6 +2,7 @@ package com.markodevcic.kvalidation
 
 import com.markodevcic.kvalidation.errors.ValidationError
 import java.util.*
+import java.util.concurrent.Executor
 
 abstract class BaseValidator<T>(private val consumer: T) where T : Any {
     private val valueContexts: MutableList<ValueContext<T, *>> = ArrayList()
@@ -43,7 +44,11 @@ abstract class BaseValidator<T>(private val consumer: T) where T : Any {
         return result
     }
 
-    fun validateAsync(callback: (ValidationResult) -> Unit) {
+    fun validateAsync(callback: (ValidationResult?, Exception?) -> Unit) {
+        doAsync({ validate() }, callback)
+    }
 
+    fun validateAsync(callback: (ValidationResult?, Exception?) -> Unit, callbackExecutor: Executor) {
+        doAsync({ validate() }, callback, callbackExecutor)
     }
 }
