@@ -5,7 +5,7 @@ import com.markodevcic.kvalidation.TestObjectValidator
 import org.junit.Assert
 import org.junit.Test
 
-class CustomValidatorTest {
+class CustomValidatorTests {
     @Test
     fun testCustomValidator(){
         val testObject = TestObject()
