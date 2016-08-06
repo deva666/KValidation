@@ -1,7 +1,7 @@
 package com.markodevcic.kvalidation.validators
 
 import com.markodevcic.kvalidation.errors.ErrorLevel
-import com.markodevcic.kvalidation.errors.MessageBuilder
+import com.markodevcic.kvalidation.messages.MessageBuilder
 
 interface Validator{
     fun isValid(result: Any?): Boolean

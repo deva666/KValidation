@@ -1,7 +1,7 @@
 package com.markodevcic.kvalidation
 
 import com.markodevcic.kvalidation.errors.ErrorLevel
-import com.markodevcic.kvalidation.errors.MessageBuilder
+import com.markodevcic.kvalidation.messages.MessageBuilder
 
 @Suppress("UNCHECKED_CAST")
 class OptionsBuilder<T, TFor>(private val valueContext: ValueContext<T, TFor>) {

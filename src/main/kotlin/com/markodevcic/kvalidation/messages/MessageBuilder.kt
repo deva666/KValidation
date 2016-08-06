@@ -1,4 +1,4 @@
-package com.markodevcic.kvalidation.errors
+package com.markodevcic.kvalidation.messages
 
 interface MessageBuilder {
     fun getErrorMessage(): String

@@ -1,4 +1,4 @@
-package com.markodevcic.kvalidation
+package com.markodevcic.kvalidation.async
 
 import java.util.concurrent.Executor
 

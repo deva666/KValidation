@@ -1,5 +1,5 @@
 package com.markodevcic.kvalidation.errors
 
-class ValidationError(val message: String, val level: ErrorLevel) {
+class ValidationError(val message: String, val level: ErrorLevel, val errorCode: Int? = null) {
 
 }

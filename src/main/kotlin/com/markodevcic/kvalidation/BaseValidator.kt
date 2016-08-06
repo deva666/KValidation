@@ -1,5 +1,6 @@
 package com.markodevcic.kvalidation
 
+import com.markodevcic.kvalidation.async.doAsync
 import com.markodevcic.kvalidation.errors.ValidationError
 import java.util.*
 import java.util.concurrent.Executor

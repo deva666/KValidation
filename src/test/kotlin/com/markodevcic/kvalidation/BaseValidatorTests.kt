@@ -12,7 +12,7 @@ class BaseValidatorTests {
         val validator = TestObjectValidator(testObject)
 
         validator.newRule { t -> t.name }
-                .length(6)
+                .length(4)
                 .mustBe { t -> t!!.startsWith("J") }
                 .equal("John")
                 .onAll()
