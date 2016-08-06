@@ -1,11 +1,12 @@
 package com.markodevcic.kvalidation.async
 
 import java.util.concurrent.Executor
+import java.util.concurrent.Executors
 
 
 inline fun <T, TR> T.doAsync(crossinline valueFactory: () -> TR,
                              crossinline callback: (TR?, Exception?) -> Unit,
-                             workExecutor: Executor = AsyncExecutors.cpuBoundExecutor,
+                             workExecutor: Executor = Executors.newSingleThreadExecutor(),
                              callbackExecutor: Executor? = null) {
     return workExecutor.execute {
         var result: TR? = null
