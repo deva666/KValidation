@@ -3,16 +3,15 @@ package com.markodevcic.kvalidation
 import com.markodevcic.kvalidation.errors.ValidationError
 import java.util.*
 
-@Suppress("UNCHECKED_CAST")
 abstract class BaseValidator<T>(private val consumer: T) where T : Any {
-    private val propertyContexts: MutableList<PropertyContext<T, *>> = ArrayList()
+    private val valueContexts: MutableList<ValueContext<T, *>> = ArrayList()
     private val consumerClass = consumer.javaClass
-    private val valueMap = HashMap<Class<*>, PropertyContext<T, *>>()
+    private val valueMap = HashMap<Class<*>, ValueContext<T, *>>()
 
     var strategy = ValidationStrategy.FULL
 
     fun <TFor> newRule(valueFactory: (T) -> TFor): RuleBuilder<T, TFor> {
-        val propertyContext = PropertyContext(valueFactory)
+        val propertyContext = ValueContext(valueFactory)
         val method = valueFactory.javaClass
                 .declaredMethods
                 .filter { m ->
@@ -22,14 +21,14 @@ abstract class BaseValidator<T>(private val consumer: T) where T : Any {
                 }.single()
         val valueClass = method.returnType as Class<TFor>
         propertyContext.clazz = valueClass
-        propertyContexts.add(propertyContext)
+        valueContexts.add(propertyContext)
         return RuleBuilder(propertyContext)
     }
 
     fun validate(): ValidationResult {
         val strategyCopy = strategy
         val result = ValidationResult()
-        propertyContexts.forEach { context ->
+        valueContexts.forEach { context ->
             val validators = context.validators
             val value = context.valueFactory(consumer)
             validators.forEach { validator ->

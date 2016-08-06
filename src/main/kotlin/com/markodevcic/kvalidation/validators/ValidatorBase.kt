@@ -1,6 +1,7 @@
 package com.markodevcic.kvalidation.validators
 
 import com.markodevcic.kvalidation.errors.ErrorLevel
+import com.markodevcic.kvalidation.errors.MessageBuilder
 
 abstract class ValidatorBase : Validator {
 
@@ -16,9 +17,11 @@ abstract class ValidatorBase : Validator {
         set(value) {
         }
 
-    override var errorMessageId: Int?
-        get() = 1
+    protected var _messageBuilder: MessageBuilder? = null
+    override var messageBuilder: MessageBuilder?
+        get() = _messageBuilder
         set(value) {
+            _messageBuilder = value
         }
 
     override var errorCode: Int?
