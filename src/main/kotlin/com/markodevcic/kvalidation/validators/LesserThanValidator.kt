@@ -2,10 +2,11 @@ package com.markodevcic.kvalidation.validators
 
 class LesserThanValidator(private val target: Number) : ValidatorBase() {
     override fun isValid(result: Any?): Boolean {
-        if (result is Number == false) {
+        if (result is Number) {
+            return result.toDouble() < target.toDouble()
+        } else {
             throw IllegalArgumentException("Lesser than validator can operate only on numbers")
         }
-        return (result as Number).toDouble() < target.toDouble()
     }
 
     override fun toString(): String {
