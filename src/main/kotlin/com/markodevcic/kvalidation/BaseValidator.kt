@@ -6,24 +6,28 @@ import java.util.concurrent.Executor
 
 abstract class BaseValidator<T>(private val consumer: T) where T : Any {
     private val valueContexts: MutableList<ValueContext<T, *>> = ArrayList()
-    private val consumerClass = consumer.javaClass
     private val valueMap = HashMap<Class<*>, ValueContext<T, *>>()
 
     var strategy = ValidationStrategy.FULL
 
     fun <TFor> newRule(valueFactory: (T) -> TFor): RuleBuilder<T, TFor> {
         val propertyContext = ValueContext(valueFactory)
+        val valueClass = getValueClass(valueFactory)
+        propertyContext.clazz = valueClass
+        valueContexts.add(propertyContext)
+        return RuleBuilder(propertyContext)
+    }
+
+    private fun <TFor> getValueClass(valueFactory: (T) -> TFor): Class<TFor> {
         val method = valueFactory.javaClass
                 .declaredMethods
                 .filter { m ->
                     m.parameterTypes.count() == 1
-                            && m.parameterTypes[0] == consumerClass
+                            && m.parameterTypes[0] == consumer.javaClass
                             && m.name == "invoke"
                 }.single()
         val valueClass = method.returnType as Class<TFor>
-        propertyContext.clazz = valueClass
-        valueContexts.add(propertyContext)
-        return RuleBuilder(propertyContext)
+        return valueClass
     }
 
     fun validate(): ValidationResult {

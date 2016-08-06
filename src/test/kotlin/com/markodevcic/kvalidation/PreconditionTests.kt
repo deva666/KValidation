@@ -39,7 +39,6 @@ class PreconditionTests {
         validator.newRule { t -> t.name }
                 .mustBe { v -> v!!.length == 0 }
                 .whenIs { t -> t.position == 0 }
-                .and()
                 .mustBe { v -> v!!.length == 1 }
                 .whenIs { t -> t.position == 1 }
 
