@@ -10,12 +10,12 @@ import java.util.concurrent.atomic.AtomicReference
 class AsyncTests {
 
     @Test
-    fun testNullCallbackExecutor(){
+    fun testNullCallbackExecutor() {
         val testObject = TestObject()
         val validator = TestObjectValidator(testObject)
 
         validator.newRule { t -> t.name }
-        .equal("John")
+                .equal("John")
 
         testObject.name = "John"
 
@@ -26,7 +26,7 @@ class AsyncTests {
             fail.set(exception)
         }
 
-        while (callBackResult.get() == null) {
+        while (callBackResult.get() == null && fail.get() == null) {
             Thread.sleep(50)
         }
 
