@@ -11,6 +11,6 @@ class GreaterThanValidator(private val target: Number): ValidatorBase() {
     }
 
     override fun toString(): String {
-        return "Greater than validator, expected value to be less than: $target"
+        return "Greater than validator, expected value to be greater than: $target"
     }
 }

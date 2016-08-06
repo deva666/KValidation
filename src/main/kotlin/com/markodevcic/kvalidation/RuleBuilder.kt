@@ -69,6 +69,16 @@ class RuleBuilder<T, TFor>(private val valueContext: ValueContext<T, TFor>) {
         return this
     }
 
+    fun lte(other: Number): RuleBuilder<T, TFor> {
+        setValidator(LesserOrEqualThanValidator(other))
+        return this
+    }
+
+    fun gte(other: Number): RuleBuilder<T, TFor> {
+        setValidator(GreaterOrEqualThanValidator(other))
+        return this
+    }
+
     fun errorMessage(message: String): RuleBuilder<T, TFor> {
         val builder = CustomMessageBuilder(message)
         currentValidator?.messageBuilder = builder

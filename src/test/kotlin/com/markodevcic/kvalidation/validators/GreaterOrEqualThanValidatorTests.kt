@@ -5,7 +5,7 @@ import com.markodevcic.kvalidation.TestObjectValidator
 import org.junit.Assert
 import org.junit.Test
 
-class GreaterThanValidatorTests {
+class GreaterOrEqualThanValidatorTests {
 
     @Test
     fun testGreaterThanInt() {
@@ -13,9 +13,9 @@ class GreaterThanValidatorTests {
         val validator = TestObjectValidator(testObject)
 
         validator.newRule { t -> t.position }
-                .gt(100)
+                .gte(100)
 
-        testObject.position = 101
+        testObject.position = 100
         var result = validator.validate()
         Assert.assertTrue(result.isValid)
 
@@ -30,9 +30,9 @@ class GreaterThanValidatorTests {
         val validator = TestObjectValidator(testObject)
 
         validator.newRule { t -> t.weight }
-                .gt(100.0)
+                .gte(100.0)
 
-        testObject.weight = 100.1
+        testObject.weight = 100.0
         var result = validator.validate()
         Assert.assertTrue(result.isValid)
 
@@ -47,7 +47,7 @@ class GreaterThanValidatorTests {
         val validator = TestObjectValidator(testObject)
 
         validator.newRule { t -> t.name }
-                .gt(200)
+                .gte(200)
 
         val result = validator.validate()
     }
