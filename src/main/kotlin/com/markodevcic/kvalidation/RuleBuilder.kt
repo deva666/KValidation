@@ -1,9 +1,6 @@
 package com.markodevcic.kvalidation
 
-import com.markodevcic.kvalidation.validators.NonNullValidator
-import com.markodevcic.kvalidation.validators.NullValidator
-import com.markodevcic.kvalidation.validators.Validator
-import com.markodevcic.kvalidation.validators.ValidatorBase
+import com.markodevcic.kvalidation.validators.*
 
 @Suppress("UNCHECKED_CAST")
 class RuleBuilder<T, TFor> {
@@ -41,6 +38,16 @@ class RuleBuilder<T, TFor> {
 
     fun isNull(): OptionsBuilder<T, TFor> {
         setValidator(NullValidator())
+        return OptionsBuilder(valueContext, currentValidator!!)
+    }
+
+    fun length(max: Int): OptionsBuilder<T, TFor> {
+        setValidator(LengthValidator(0, max))
+        return OptionsBuilder(valueContext, currentValidator!!)
+    }
+
+    fun length(min: Int, max: Int): OptionsBuilder<T, TFor> {
+        setValidator(LengthValidator(min, max))
         return OptionsBuilder(valueContext, currentValidator!!)
     }
 
