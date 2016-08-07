@@ -43,12 +43,7 @@ abstract class AbstractValidator<T>(private val consumer: T) where T : Any {
     @Suppress("UNCHECKED_CAST")
     private fun <TFor> getValueClass(valueFactory: (T) -> TFor): Class<TFor> {
         val method = valueFactory.javaClass
-                .declaredMethods
-                .filter { m ->
-                    m.parameterTypes.count() == 1
-                            && m.parameterTypes[0] == consumer.javaClass
-                            && m.name == "invoke"
-                }.single()
+                .getMethod("invoke", Object::class.java)
         val valueClass = method.returnType as Class<TFor>
         return valueClass
     }
