@@ -7,7 +7,7 @@
 * written in Kotlin
 
 ---------------
-Example:
+### Example: ###
 
 ```java
 Person person = new Person();
@@ -22,8 +22,13 @@ validator.newRule(p -> p.name)
 
 ValidationResult result = validator.validate();
 ```
+------------
 
+### How to use it ###
+Download the jar file from the downloads page and include it in your project.
 
 ---------------
 
 Written by [Marko Devcic](http://www.markodevcic.com)
+
+License [GPL3](https://www.gnu.org/licenses/gpl-3.0.en.html)
