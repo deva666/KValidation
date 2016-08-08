@@ -31,7 +31,12 @@ public class JavaTest {
 		validator.newRule(new Fun())
 				.nonNull()
 				.length(3, 6)
-				.mustBe((n) -> n.startsWith("J"));
+				.mustBe(new Function1<String,Boolean>() {
+					@Override
+					public Boolean invoke(String s) {
+						return s.startsWith("J");
+					}
+				});
 
 		testObject.setName("Patrick");
 		ValidationResult result = validator.validate();
