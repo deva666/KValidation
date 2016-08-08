@@ -25,7 +25,7 @@ ValidationResult result = validator.validate();
 ------------
 
 ### How to use it ###
-Download the jar file from the downloads page and include it in your project.
+[Download](https://bitbucket.org/deva666/kvalidation/downloads/kvalidation-1.0-SNAPSHOT.jar) the jar file and include it in your project.
 
 ---------------
 
