@@ -80,8 +80,7 @@ class RuleBuilder<T, TFor>(private val valueContext: ValueContext<T, TFor>) {
     }
 
     fun errorMessage(message: String): RuleBuilder<T, TFor> {
-        val builder = CustomMessageBuilder(message)
-        currentValidator?.messageBuilder = builder
+        currentValidator?.messageBuilder = CustomMessageBuilder(message)
         return this
     }
 

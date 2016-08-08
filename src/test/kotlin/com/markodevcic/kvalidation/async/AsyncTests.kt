@@ -27,7 +27,6 @@ class AsyncTests {
         }
 
         while (callBackResult.get() == null && fail.get() == null) {
-            Thread.sleep(50)
         }
 
         Assert.assertNotNull(callBackResult.get())

@@ -4,7 +4,7 @@ import com.markodevcic.kvalidation.errors.ErrorLevel
 import org.junit.Assert
 import org.junit.Test
 
-class BaseValidatorTests {
+class AbstractValidatorTests {
 
     @Test
     fun testOnAllErrorSet() {
@@ -46,5 +46,15 @@ class BaseValidatorTests {
         Assert.assertFalse(result.isValid)
         Assert.assertEquals(3, result.validationErrors.size)
         result.validationErrors.forEach { e -> Assert.assertEquals("fail", e.message) }
+    }
+
+    @Test
+    fun testNoRulesSet() {
+        val testObject = TestObject()
+        val validator = TestObjectValidator(testObject)
+
+        val result = validator.validate()
+        Assert.assertTrue(result.isValid)
+        Assert.assertEquals(0, result.validationErrors.size)
     }
 }

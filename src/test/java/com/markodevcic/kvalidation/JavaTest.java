@@ -28,7 +28,7 @@ public class JavaTest {
 		TestObject testObject = new TestObject();
 		TestObjectValidator validator = new TestObjectValidator(testObject);
 
-		validator.newRule(new fun())
+		validator.newRule(new Fun())
 				.nonNull()
 				.length(3, 6)
 				.mustBe((n) -> n.startsWith("J"));
@@ -44,18 +44,10 @@ public class JavaTest {
 		Assert.assertEquals(0, result.getValidationErrors().size());
 	}
 
-	private class fun implements Function1<TestObject, String>{
-//		public Object invoke(TestObject i, Integer a) {
-//			return "";
-//		}
-
+	private static class Fun implements Function1<TestObject, String>{
 		@Override
 		public String invoke(TestObject testObject) {
 			return testObject.getName();
-		}
-
-		public String invoke(Integer o) {
-			return "";
 		}
 	}
 }

@@ -3,13 +3,13 @@ package com.markodevcic.kvalidation
 import com.markodevcic.kvalidation.async.doAsync
 import com.markodevcic.kvalidation.errors.ValidationError
 import com.markodevcic.kvalidation.messages.DefaultMessageBuilder
+import java.lang.reflect.Method
 import java.util.*
 import java.util.concurrent.Executor
 
 abstract class AbstractValidator<T>(private val consumer: T) where T : Any {
     private val valueContexts: MutableList<ValueContext<T, *>> = ArrayList()
     private lateinit var valueFactory: (T) -> Any?
-    private val valueMap = HashMap<Class<*>, ValueContext<T, *>>()
 
     var strategy = ValidationStrategy.FULL
 
@@ -42,8 +42,14 @@ abstract class AbstractValidator<T>(private val consumer: T) where T : Any {
 
     @Suppress("UNCHECKED_CAST")
     private fun <TFor> getValueClass(valueFactory: (T) -> TFor): Class<TFor> {
-        val method = valueFactory.javaClass
-                .getMethod("invoke", Object::class.java)
+        val method: Method
+        try {
+            method = valueFactory.javaClass
+                    .getMethod("invoke", consumer.javaClass)
+        } catch (e: NoSuchMethodException) {
+            method = valueFactory.javaClass
+                    .getMethod("invoke", Object::class.java)
+        }
         val valueClass = method.returnType as Class<TFor>
         return valueClass
     }
