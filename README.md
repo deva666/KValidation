@@ -31,4 +31,4 @@ ValidationResult result = validator.validate();
 
 Written by [Marko Devcic](http://www.markodevcic.com)
 
-License [GPL3](https://www.gnu.org/licenses/gpl-3.0.en.html)
+License [APL 2.0 ](http://www.apache.org/licenses/LICENSE-2.0)
