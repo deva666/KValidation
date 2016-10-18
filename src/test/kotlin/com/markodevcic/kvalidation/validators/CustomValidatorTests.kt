@@ -2,17 +2,18 @@ package com.markodevcic.kvalidation.validators
 
 import com.markodevcic.kvalidation.TestObject
 import com.markodevcic.kvalidation.TestObjectValidator
+import com.markodevcic.kvalidation.messages.MessageBuilder
 import org.junit.Assert
 import org.junit.Test
 
 class CustomValidatorTests {
     @Test
-    fun testCustomValidator(){
+    fun testCustomValidator() {
         val testObject = TestObject()
         val validator = TestObjectValidator(testObject)
 
         validator.newRule { t -> t.position }
-        .mustBe { v -> v == 10 }
+                .mustBe { v -> v == 10 }
 
         testObject.position = 1
         val failResult = validator.validate()
@@ -23,5 +24,32 @@ class CustomValidatorTests {
         val okResult = validator.validate()
         Assert.assertTrue(okResult.isValid)
         Assert.assertTrue(okResult.validationErrors.size == 0)
+    }
+
+    @Test
+    fun testNullableField() {
+        val testObject = TestObject()
+        val validator = TestObjectValidator(testObject)
+
+        validator.newRule({ t -> t.position }, {
+            notEqual(Int.MAX_VALUE)
+            lte(10)
+            gte(5)
+        }, {
+        })
+
+        testObject.position = 33
+        val result = validator.validate()
+        Assert.assertFalse(result.isValid)
+        Assert.assertEquals(1, result.validationErrors.size)
+
+        validator.newFor { t -> t.position } rules {
+            lt(45)
+            gt(5)
+            notEqual(40)
+            whenIsOnAll { t -> t.position != null }
+        } onError {
+
+        }
     }
 }

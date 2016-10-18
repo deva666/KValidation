@@ -1,5 +1,7 @@
 package com.markodevcic.kvalidation;
 
+import com.markodevcic.kvalidation.validators.StatusBuilder;
+import kotlin.Unit;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -32,11 +34,22 @@ public class JavaTest {
 				.nonNull()
 				.length(3, 6)
 				.mustBe(new Function1<String,Boolean>() {
-					@Override
 					public Boolean invoke(String s) {
 						return s.startsWith("J");
 					}
 				});
+
+		validator.newFor(new Fun()).rules(new Function1<RuleBuilder<TestObject, String>, Unit>() {
+			public Unit invoke(RuleBuilder<TestObject, String> builder) {
+				builder.gt(23);
+				return null;
+			}
+		}).onError(new Function1<StatusBuilder<TestObject, String>, Unit>() {
+			public Unit invoke(StatusBuilder<TestObject, String> testObjectStringStatusBuilder) {
+				return null;
+			}
+		});
+
 
 		testObject.setName("Patrick");
 		ValidationResult result = validator.validate();
@@ -50,7 +63,6 @@ public class JavaTest {
 	}
 
 	private static class Fun implements Function1<TestObject, String>{
-		@Override
 		public String invoke(TestObject testObject) {
 			return testObject.getName();
 		}

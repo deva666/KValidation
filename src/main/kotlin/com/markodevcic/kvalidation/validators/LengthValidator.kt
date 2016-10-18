@@ -9,11 +9,11 @@ class LengthValidator(private val min: Int, private val max: Int) : ValidatorBas
     }
 
     override fun isValid(result: Any?): Boolean {
-        val text = result.toString()
+        val text = result?.toString() ?: ""
         return text.length >= min && text.length <= max
     }
 
     override fun toString(): String {
-        return "Length validator, expected length between: $min - $max"
+        return "Length validator, expected text length between: $min - $max"
     }
 }
