@@ -22,8 +22,9 @@ import com.markodevcic.kvalidation.messages.MessageBuilder
 import com.markodevcic.kvalidation.validators.*
 
 @Suppress("UNCHECKED_CAST")
-class RuleBuilder<T, TFor>(private val valueContext: ValueContext<T, TFor>) {
-    private var currentValidator: Validator? = null
+class RuleBuilder<T, TFor>(private val valueContext: ValueContext<T, TFor>) : EndBuilder<T, TFor>(null) {
+    //    private var currentValidator: Validator? = null
+    private var canBeNull: Boolean = false
 
     private fun setValidator(validator: Validator) {
         currentValidator = validator
@@ -45,12 +46,20 @@ class RuleBuilder<T, TFor>(private val valueContext: ValueContext<T, TFor>) {
         return this
     }
 
-    fun nonNull(): RuleBuilder<T, TFor> {
-        setValidator(NonNullValidator())
+    fun canBeNull(value: Boolean): RuleBuilder<T, TFor> {
+        valueContext.canBeNull = value
         return this
     }
 
-    fun isNull(): RuleBuilder<T, TFor> {
+//    fun nonNull(): RuleBuilder<T, TFor> {
+//        setValidator(NonNullValidator())
+//        return this
+//    }
+
+    fun isNull(): EndBuilder<T, TFor> {
+        if (valueContext.validators.size != 0) {
+            throw IllegalStateException("can't set is null validator with other validators")
+        }
         setValidator(NullValidator())
         return this
     }
@@ -95,32 +104,66 @@ class RuleBuilder<T, TFor>(private val valueContext: ValueContext<T, TFor>) {
         return this
     }
 
-    fun errorMessage(message: String): RuleBuilder<T, TFor> {
-        currentValidator?.messageBuilder = CustomMessageBuilder(message)
+    fun isContainedIn(source: Collection<TFor>): RuleBuilder<T, TFor> {
+        setValidator(ContainsValidator(source))
         return this
     }
 
-    fun errorMessage(messageBuilder: MessageBuilder): RuleBuilder<T, TFor> {
-        currentValidator?.messageBuilder = messageBuilder
-        return this
-    }
-
-    fun errorCode(code: Int): RuleBuilder<T, TFor> {
-        currentValidator?.errorCode = code
-        return this
-    }
-
+    //    fun errorMessage(message: String): RuleBuilder<T, TFor> {
+//        currentValidator?.messageBuilder = CustomMessageBuilder(message)
+//        return this
+//    }
+//
+//    fun errorMessage(messageBuilder: MessageBuilder): RuleBuilder<T, TFor> {
+//        currentValidator?.messageBuilder = messageBuilder
+//        return this
+//    }
+//
+//    fun errorCode(code: Int): RuleBuilder<T, TFor> {
+//        currentValidator?.errorCode = code
+//        return this
+//    }
+//
     fun whenIs(precondition: (T) -> Boolean): RuleBuilder<T, TFor> {
         currentValidator?.precondition = { c -> precondition.invoke(c as T) }
         return this
     }
 
-    fun errorLevel(errorLevel: ErrorLevel): RuleBuilder<T, TFor> {
-        currentValidator?.errorLevel = errorLevel
-        return this
-    }
-
+    //
+//    fun errorLevel(errorLevel: ErrorLevel): RuleBuilder<T, TFor> {
+//        currentValidator?.errorLevel = errorLevel
+//        return this
+//    }
+//
     fun onAll(): AllRulesOptionsBuilder<T, TFor> {
         return AllRulesOptionsBuilder(valueContext)
     }
 }
+
+open class EndBuilder<T, TFor>(protected var currentValidator: Validator?) {
+    fun errorMessage(message: String): EndBuilder<T, TFor> {
+        currentValidator?.messageBuilder = CustomMessageBuilder(message)
+        return this
+    }
+
+    fun errorMessage(messageBuilder: MessageBuilder): EndBuilder<T, TFor> {
+        currentValidator?.messageBuilder = messageBuilder
+        return this
+    }
+
+    fun errorCode(code: Int): EndBuilder<T, TFor> {
+        currentValidator?.errorCode = code
+        return this
+    }
+
+//        fun whenIs(precondition: (T) -> Boolean): EndBuilder<T, TFor> {
+//            currentValidator?.precondition = { c -> precondition.invoke(c as T) }
+//            return this
+//        }
+
+    fun errorLevel(errorLevel: ErrorLevel): EndBuilder<T, TFor> {
+        currentValidator?.errorLevel = errorLevel
+        return this
+    }
+}
+

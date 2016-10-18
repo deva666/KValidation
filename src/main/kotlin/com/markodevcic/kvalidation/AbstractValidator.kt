@@ -19,6 +19,7 @@ package com.markodevcic.kvalidation
 import com.markodevcic.kvalidation.async.doAsync
 import com.markodevcic.kvalidation.errors.ValidationError
 import com.markodevcic.kvalidation.messages.DefaultMessageBuilder
+import com.markodevcic.kvalidation.validators.NullValidator
 import java.lang.reflect.Method
 import java.util.*
 import java.util.concurrent.Executor
@@ -29,7 +30,7 @@ abstract class AbstractValidator<T>(private val consumer: T) where T : Any {
 
     var strategy = ValidationStrategy.FULL
 
-    fun <TFor> newRule(valueFactory: (T) -> TFor): RuleBuilder<T, TFor> {
+    fun <TFor> newRule(valueFactory: (T) -> TFor?): RuleBuilder<T, TFor> {
         val valueContext = ValueContext(valueFactory)
         this.valueFactory = valueFactory
         valueContexts.add(valueContext)
@@ -42,6 +43,12 @@ abstract class AbstractValidator<T>(private val consumer: T) where T : Any {
         valueContexts.forEach { context ->
             val validators = context.validators
             val value = context.valueFactory(consumer)
+            if (value == null) {
+                if (!context.canBeNull) {
+                    context.validators.add(0, NullValidator())
+                }
+                return result
+            }
             validators.forEach { validator ->
                 if (validator.precondition?.invoke(consumer) ?: true && !validator.isValid(value)) {
                     result.validationErrors.add(ValidationError(validator.messageBuilder?.getErrorMessage()
