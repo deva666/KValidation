@@ -41,14 +41,4 @@ class GreaterThanValidatorTests {
         Assert.assertFalse(result.isValid)
     }
 
-    @Test(expected = IllegalArgumentException::class)
-    fun testInvalidArgument() {
-        val testObject = TestObject()
-        val validator = TestObjectValidator(testObject)
-
-        validator.newRule { t -> t.name }
-                .gt(200)
-
-        val result = validator.validate()
-    }
 }

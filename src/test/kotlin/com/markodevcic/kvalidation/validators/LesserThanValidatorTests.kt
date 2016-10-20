@@ -40,15 +40,4 @@ class LesserThanValidatorTests {
         result = validator.validate()
         Assert.assertFalse(result.isValid)
     }
-
-    @Test(expected = IllegalArgumentException::class)
-    fun testInvalidArgument() {
-        val testObject = TestObject()
-        val validator = TestObjectValidator(testObject)
-
-        validator.newRule { t -> t.name }
-                .lt(200)
-
-        val result = validator.validate()
-    }
 }
