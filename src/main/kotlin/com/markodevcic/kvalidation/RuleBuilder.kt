@@ -16,9 +16,6 @@ limitations under the License.
 
 package com.markodevcic.kvalidation
 
-import com.markodevcic.kvalidation.errors.ErrorLevel
-import com.markodevcic.kvalidation.messages.CustomMessageBuilder
-import com.markodevcic.kvalidation.messages.MessageBuilder
 import com.markodevcic.kvalidation.validators.*
 
 @Suppress("UNCHECKED_CAST")
@@ -100,6 +97,11 @@ open class RuleBuilder<T, TFor>(protected val valueContext: ValueContext<T, TFor
 
     infix fun isContainedIn(source: Collection<TFor>): RuleBuilder<T, TFor> {
         setValidator(ContainsValidator(source))
+        return this
+    }
+
+    fun inRange(min: Number, max: Number): RuleBuilder<T, TFor>{
+        setValidator(RangeValidator(min, max))
         return this
     }
 
