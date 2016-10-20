@@ -1,12 +1,11 @@
 package com.markodevcic.kvalidation.validators
 
-import com.markodevcic.kvalidation.RuleBuilder
 import com.markodevcic.kvalidation.ValueContext
 import com.markodevcic.kvalidation.errors.ErrorLevel
 import com.markodevcic.kvalidation.messages.CustomMessageBuilder
 import com.markodevcic.kvalidation.messages.MessageBuilder
 
-class StatusBuilder<T, TFor>(protected val valueContext: ValueContext<T, TFor>) {
+class StatusBuilder<T, TFor>(private val valueContext: ValueContext<T, TFor>) {
 
     infix fun errorMessage(message: String): StatusBuilder<T, TFor> {
         val messageBuilder = CustomMessageBuilder(message)
@@ -26,6 +25,11 @@ class StatusBuilder<T, TFor>(protected val valueContext: ValueContext<T, TFor>) 
 
     infix fun errorLevel(errorLevel: ErrorLevel): StatusBuilder<T, TFor> {
         valueContext.validators.forEach { v -> v.errorLevel = errorLevel }
+        return this
+    }
+
+    infix fun propertyName(name: String) : StatusBuilder<T, TFor> {
+        valueContext.propertyName = name
         return this
     }
 }

@@ -18,39 +18,32 @@ package com.markodevcic.kvalidation
 
 import com.markodevcic.kvalidation.async.doAsync
 import com.markodevcic.kvalidation.errors.ValidationError
-import com.markodevcic.kvalidation.messages.DefaultMessageBuilder
-import com.markodevcic.kvalidation.validators.NullValidator
 import com.markodevcic.kvalidation.validators.StatusBuilder
 import com.markodevcic.kvalidation.validators.Validator
-import java.lang.reflect.Method
 import java.util.*
 import java.util.concurrent.Executor
 
 abstract class AbstractValidator<T>(private val consumer: T) where T : Any {
     private val valueContexts: MutableList<ValueContext<T, *>> = ArrayList()
-    private lateinit var valueFactory: (T) -> Any?
 
     var strategy = ValidationStrategy.FULL
 
     fun <TFor : Any> newRule(valueFactory: (T) -> TFor?): RuleBuilder<T, TFor> {
         val valueContext = ValueContext(valueFactory)
-        this.valueFactory = valueFactory
         valueContexts.add(valueContext)
         return RuleBuilder(valueContext)
     }
 
-    fun <TFor : Any> newRule(valueFactory: (T) -> TFor?, builder: RuleBuilder<T,TFor>.() -> Unit) {
+    fun <TFor : Any> newRule(valueFactory: (T) -> TFor?, builder: RuleBuilder<T, TFor>.() -> Unit) {
         val valueContext = ValueContext(valueFactory)
-        this.valueFactory = valueFactory
         valueContexts.add(valueContext)
         builder(RuleBuilder(valueContext))
     }
 
     fun <TFor : Any> newRule(valueFactory: (T) -> TFor?,
-                             ruleInit: RuleBuilder<T,TFor>.() -> Unit,
+                             ruleInit: RuleBuilder<T, TFor>.() -> Unit,
                              statusInit: StatusBuilder<T, TFor>.() -> Unit) {
         val valueContext = ValueContext(valueFactory)
-        this.valueFactory = valueFactory
         valueContexts.add(valueContext)
         ruleInit(RuleBuilder(valueContext))
         statusInit(StatusBuilder(valueContext))
@@ -58,18 +51,17 @@ abstract class AbstractValidator<T>(private val consumer: T) where T : Any {
 
     fun <TFor : Any> newFor(valueFactory: (T) -> TFor?): Creator<T, TFor> {
         val valueContext = ValueContext(valueFactory)
-        this.valueFactory = valueFactory
         valueContexts.add(valueContext)
         return Creator(valueContext)
     }
 
-    class Creator<T, TFor>(private val valueContext: ValueContext<T, TFor>){
-        infix fun rules(ruleInit: RuleBuilder<T,TFor>.() -> Unit) : Creator<T, TFor> {
+    class Creator<T, TFor>(private val valueContext: ValueContext<T, TFor>) {
+        infix fun rules(ruleInit: RuleBuilder<T, TFor>.() -> Unit): Creator<T, TFor> {
             ruleInit(RuleBuilder(valueContext))
             return this
         }
 
-        infix fun onError(statusInit: StatusBuilder<T, TFor>.() -> Unit){
+        infix fun onError(statusInit: StatusBuilder<T, TFor>.() -> Unit) {
             statusInit(StatusBuilder(valueContext))
         }
     }
@@ -81,7 +73,7 @@ abstract class AbstractValidator<T>(private val consumer: T) where T : Any {
             val value = context.valueFactory(consumer)
             validators.forEach { validator ->
                 if (validator.precondition?.invoke(consumer) ?: true && !validator.isValid(value)) {
-                    val error = createValidationError(validator)
+                    val error = createValidationError(validator, value, context.propertyName)
                     result.validationErrors.add(error)
                     if (strategy == ValidationStrategy.STOP_ON_FIRST) {
                         return result
@@ -92,15 +84,12 @@ abstract class AbstractValidator<T>(private val consumer: T) where T : Any {
         return result
     }
 
-    private fun createValidationError(validator: Validator): ValidationError {
+    private fun <TFor: Any> createValidationError(validator: Validator, value: TFor?, propertyName: String?): ValidationError {
+        val debugMessage = "$validator, received value: $value" +
+                if (propertyName != null) ", property name: $propertyName" else ""
         val error = ValidationError(validator.messageBuilder?.getErrorMessage()
-                ?: DefaultMessageBuilder(getPropertyClass(valueFactory), validator).getErrorMessage()
-                , validator.errorLevel)
+                ?: debugMessage, validator.errorLevel, validator.errorCode, debugMessage)
         return error
-    }
-
-    private inline fun <reified TFor: Any> getPropertyClass(noinline valueFactory: (T) -> TFor?): Class<TFor> {
-        return TFor::class.java
     }
 
     fun validateAsync(callback: (ValidationResult?, Exception?) -> Unit) {

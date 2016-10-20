@@ -7,7 +7,7 @@ class LesserOrEqualThanValidator(private val target: Number): ValidatorBase() {
         } else if (result == null) {
             return true
         } else {
-            throw IllegalArgumentException("Lesser or equal than validator can operate only on numbers")
+            return false
         }
     }
 

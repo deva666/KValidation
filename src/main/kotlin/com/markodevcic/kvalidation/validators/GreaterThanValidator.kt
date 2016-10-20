@@ -8,7 +8,7 @@ class GreaterThanValidator(private val target: Number): ValidatorBase() {
         } else if (result == null) {
             return true
         } else {
-            throw IllegalArgumentException("Greater than validator can operate only on numbers")
+            return false
         }
     }
 
