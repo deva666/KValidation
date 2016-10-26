@@ -1,6 +1,5 @@
 package com.markodevcic.kvalidation;
 
-import com.markodevcic.kvalidation.validators.StatusBuilder;
 import kotlin.Unit;
 import org.junit.Assert;
 import org.junit.Test;
@@ -44,8 +43,8 @@ public class JavaTest {
 				builder.gt(23);
 				return null;
 			}
-		}).onError(new Function1<StatusBuilder<TestObject, String>, Unit>() {
-			public Unit invoke(StatusBuilder<TestObject, String> testObjectStringStatusBuilder) {
+		}).onError(new Function1<OnErrorBuilder<TestObject, String>, Unit>() {
+			public Unit invoke(OnErrorBuilder<TestObject, String> testObjectStringOnErrorBuilder) {
 				return null;
 			}
 		});

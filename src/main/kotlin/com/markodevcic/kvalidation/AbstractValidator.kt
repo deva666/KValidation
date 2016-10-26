@@ -18,7 +18,6 @@ package com.markodevcic.kvalidation
 
 import com.markodevcic.kvalidation.async.doAsync
 import com.markodevcic.kvalidation.errors.ValidationError
-import com.markodevcic.kvalidation.validators.StatusBuilder
 import com.markodevcic.kvalidation.validators.Validator
 import java.util.*
 import java.util.concurrent.Executor
@@ -46,8 +45,8 @@ abstract class AbstractValidator<T>(private val consumer: T) where T : Any {
             return this
         }
 
-        infix fun onError(statusInit: StatusBuilder<T, TFor>.() -> Unit) {
-            statusInit(StatusBuilder(valueContext))
+        infix fun onError(onErrorInit: OnErrorBuilder<T, TFor>.() -> Unit) {
+            onErrorInit(OnErrorBuilder(valueContext))
         }
     }
 

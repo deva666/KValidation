@@ -116,5 +116,9 @@ open class RuleBuilder<T, TFor>(protected val valueContext: ValueContext<T, TFor
         }
         return this
     }
+
+    fun onError(): OnErrorBuilder<T, TFor> {
+        return OnErrorBuilder(valueContext)
+    }
 }
 
