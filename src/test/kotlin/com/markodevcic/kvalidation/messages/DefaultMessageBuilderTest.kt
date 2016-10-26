@@ -11,7 +11,7 @@ class DefaultMessageBuilderTest {
         val testObject = TestObject()
         val validator = TestObjectValidator(testObject)
 
-        validator.newFor { t -> t.position } rules {
+        validator.forValue { t -> t.position } rules {
             gt(1000)
             notEqual(0)
             lt(1)

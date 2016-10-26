@@ -10,7 +10,7 @@ class PreconditionTests {
         val testObject = TestObject()
         val validator = TestObjectValidator(testObject)
 
-        validator.newRule { t -> t.name }
+        validator.forValueBuilder { t -> t.name }
                 .mustBe { v -> v!!.length == 5 }
                 .whenIs { t -> t.name != null }
 
@@ -36,7 +36,7 @@ class PreconditionTests {
         val testObject = TestObject()
         val validator = TestObjectValidator(testObject)
 
-        validator.newRule { t -> t.name }
+        validator.forValueBuilder { t -> t.name }
                 .mustBe { v -> v!!.length == 0 }
                 .whenIs { t -> t.position == 0 }
                 .mustBe { v -> v!!.length == 1 }

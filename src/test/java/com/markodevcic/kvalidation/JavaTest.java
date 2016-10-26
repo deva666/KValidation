@@ -14,7 +14,7 @@ public class JavaTest {
 		TestObject testObject = new TestObject();
 		TestObjectValidator validator = new TestObjectValidator(testObject);
 
-		validator.newRule(new Function1<TestObject,String>() {
+		validator.forValueBuilder(new Function1<TestObject,String>() {
 			public String invoke(TestObject testObject) {
 				return testObject.getName();
 			}
@@ -30,7 +30,7 @@ public class JavaTest {
 		TestObject testObject = new TestObject();
 		TestObjectValidator validator = new TestObjectValidator(testObject);
 
-		validator.newRule(new Fun())
+		validator.forValueBuilder(new Fun())
 				.nonNull()
 				.length(3, 6)
 				.mustBe(new Function1<String,Boolean>() {
@@ -39,7 +39,7 @@ public class JavaTest {
 					}
 				});
 
-		validator.newFor(new Fun()).rules(new Function1<RuleBuilder<TestObject, String>, Unit>() {
+		validator.forValue(new Fun()).rules(new Function1<RuleBuilder<TestObject, String>, Unit>() {
 			public Unit invoke(RuleBuilder<TestObject, String> builder) {
 				builder.gt(23);
 				return null;

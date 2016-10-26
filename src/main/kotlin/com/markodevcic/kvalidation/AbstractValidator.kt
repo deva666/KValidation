@@ -28,28 +28,13 @@ abstract class AbstractValidator<T>(private val consumer: T) where T : Any {
 
     var strategy = ValidationStrategy.FULL
 
-    fun <TFor : Any> newRule(valueFactory: (T) -> TFor?): RuleBuilder<T, TFor> {
+    fun <TFor : Any> forValueBuilder(valueFactory: (T) -> TFor?): RuleBuilder<T, TFor> {
         val valueContext = ValueContext(valueFactory)
         valueContexts.add(valueContext)
         return RuleBuilder(valueContext)
     }
 
-    fun <TFor : Any> newRule(valueFactory: (T) -> TFor?, builder: RuleBuilder<T, TFor>.() -> Unit) {
-        val valueContext = ValueContext(valueFactory)
-        valueContexts.add(valueContext)
-        builder(RuleBuilder(valueContext))
-    }
-
-    fun <TFor : Any> newRule(valueFactory: (T) -> TFor?,
-                             ruleInit: RuleBuilder<T, TFor>.() -> Unit,
-                             statusInit: StatusBuilder<T, TFor>.() -> Unit) {
-        val valueContext = ValueContext(valueFactory)
-        valueContexts.add(valueContext)
-        ruleInit(RuleBuilder(valueContext))
-        statusInit(StatusBuilder(valueContext))
-    }
-
-    fun <TFor : Any> newFor(valueFactory: (T) -> TFor?): Creator<T, TFor> {
+    fun <TFor : Any> forValue(valueFactory: (T) -> TFor?): Creator<T, TFor> {
         val valueContext = ValueContext(valueFactory)
         valueContexts.add(valueContext)
         return Creator(valueContext)

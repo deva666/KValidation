@@ -11,7 +11,7 @@ class AbstractValidatorTests {
         val testObject = TestObject()
         val validator = TestObjectValidator(testObject)
 
-        validator.newFor { t -> t.name } rules {
+        validator.forValue { t -> t.name } rules {
             length(4)
             mustBe { t -> t!!.startsWith("J") }
             equal("John")
@@ -33,7 +33,7 @@ class AbstractValidatorTests {
         val testObject = TestObject()
         val validator = TestObjectValidator(testObject)
 
-        validator.newFor { t -> t.name } rules {
+        validator.forValue { t -> t.name } rules {
             length(4)
             mustBe { t -> t!!.startsWith("J") }
             equal("John")

@@ -2,7 +2,6 @@ package com.markodevcic.kvalidation.validators
 
 import com.markodevcic.kvalidation.TestObject
 import com.markodevcic.kvalidation.TestObjectValidator
-import com.markodevcic.kvalidation.messages.MessageBuilder
 import org.junit.Assert
 import org.junit.Test
 
@@ -12,7 +11,7 @@ class CustomValidatorTests {
         val testObject = TestObject()
         val validator = TestObjectValidator(testObject)
 
-        validator.newRule { t -> t.position }
+        validator.forValueBuilder { t -> t.position }
                 .mustBe { v -> v == 10 }
 
         testObject.position = 1
@@ -31,19 +30,19 @@ class CustomValidatorTests {
         val testObject = TestObject()
         val validator = TestObjectValidator(testObject)
 
-        validator.newRule({ t -> t.position }, {
+        validator.forValue{ t -> t.position } rules {
             notEqual(Int.MAX_VALUE)
             lte(10)
             gte(5)
-        }, {
-        })
+        } onError {
+        }
 
         testObject.position = 33
         val result = validator.validate()
         Assert.assertFalse(result.isValid)
         Assert.assertEquals(1, result.validationErrors.size)
 
-        validator.newFor { t -> t.position } rules {
+        validator.forValue { t -> t.position } rules {
             lt(45)
             gt(5)
             notEqual(40)
