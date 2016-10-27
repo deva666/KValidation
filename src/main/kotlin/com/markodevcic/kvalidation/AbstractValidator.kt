@@ -40,13 +40,13 @@ abstract class AbstractValidator<T>(private val consumer: T) where T : Any {
     }
 
     class Creator<T, TFor>(private val valueContext: ValueContext<T, TFor>) {
-        infix fun rules(ruleInit: RuleBuilder<T, TFor>.() -> Unit): Creator<T, TFor> {
-            ruleInit(RuleBuilder(valueContext))
+        infix fun rules(ruleInit: RuleSetter<T, TFor>.() -> Unit): Creator<T, TFor> {
+            ruleInit(RuleSetter(valueContext))
             return this
         }
 
-        infix fun onError(onErrorInit: OnErrorBuilder<T, TFor>.() -> Unit) {
-            onErrorInit(OnErrorBuilder(valueContext))
+        infix fun onError(onErrorInit: OnErrorSetter<T, TFor>.() -> Unit) {
+            onErrorInit(OnErrorSetter(valueContext))
         }
     }
 
