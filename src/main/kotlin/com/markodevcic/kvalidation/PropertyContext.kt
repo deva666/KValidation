@@ -16,9 +16,9 @@ limitations under the License.
 
 package com.markodevcic.kvalidation
 
-import com.markodevcic.kvalidation.validators.Validator
+import com.markodevcic.kvalidation.validators.PropertyValidator
 import java.util.*
 
-class ValueContext<in T, out TFor>(val valueFactory: (T) -> TFor?, var propertyName: String? = null) {
-    val validators = ArrayList<Validator>()
+class PropertyContext<in T, out TFor>(val valueFactory: (T) -> TFor?, var propertyName: String? = null) {
+    val validators = ArrayList<PropertyValidator>()
 }

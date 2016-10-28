@@ -1,6 +1,6 @@
 package com.markodevcic.kvalidation.validators
 
-class LengthValidator(private val min: Int, private val max: Int) : ValidatorBase() {
+class LengthValidator(private val min: Int, private val max: Int) : PropertyValidatorBase() {
 
     init {
         if (max < min) {

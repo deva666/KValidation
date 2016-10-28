@@ -1,6 +1,6 @@
 package com.markodevcic.kvalidation.validators
 
-class GreaterOrEqualThanValidator(private val target: Number) : ValidatorBase() {
+class GreaterOrEqualThanValidator(private val target: Number) : PropertyValidatorBase() {
 
     override fun isValid(result: Any?): Boolean {
         if (result is Number) {

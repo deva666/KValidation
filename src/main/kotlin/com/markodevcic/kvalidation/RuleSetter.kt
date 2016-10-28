@@ -3,20 +3,20 @@ package com.markodevcic.kvalidation
 import com.markodevcic.kvalidation.validators.*
 
 @Suppress("UNCHECKED_CAST")
-class RuleSetter<T, TFor>(private val valueContext: ValueContext<T, TFor>) {
-    private var currentValidator: Validator? = null
+class RuleSetter<T, TFor>(private val propertyContext: PropertyContext<T, TFor>) {
+    private var currentPropertyValidator: PropertyValidator? = null
 
-    private fun setValidator(validator: Validator) {
-        currentValidator = validator
-        valueContext.validators.add(validator)
+    private fun setValidator(validator: PropertyValidator) {
+        currentPropertyValidator = validator
+        propertyContext.validators.add(validator)
     }
 
-    infix fun mustBe(validator: Validator) {
-        setValidator(validator)
+    infix fun mustBe(propertyValidator: PropertyValidator) {
+        setValidator(propertyValidator)
     }
 
     infix fun mustBe(predicate: (TFor?) -> Boolean) {
-        val validator = object : ValidatorBase() {
+        val validator = object : PropertyValidatorBase() {
             override fun isValid(result: Any?): Boolean {
                 return predicate.invoke(result as TFor?)
             }
@@ -29,7 +29,7 @@ class RuleSetter<T, TFor>(private val valueContext: ValueContext<T, TFor>) {
     }
 
     fun isNull() {
-        if (valueContext.validators.size != 0) {
+        if (propertyContext.validators.size != 0) {
             throw IllegalStateException("can't set is null validator with other validators")
         }
         setValidator(NullValidator())
@@ -76,11 +76,11 @@ class RuleSetter<T, TFor>(private val valueContext: ValueContext<T, TFor>) {
     }
 
     infix fun whenIs(precondition: (T) -> Boolean) {
-        currentValidator?.precondition = { c -> precondition.invoke(c as T) }
+        currentPropertyValidator?.precondition = { c -> precondition.invoke(c as T) }
     }
 
     infix fun whenIsOnAll(precondition: (T) -> Boolean) {
-        valueContext.validators.forEach { v ->
+        propertyContext.validators.forEach { v ->
             v.precondition = { c -> precondition.invoke(c as T) }
         }
     }

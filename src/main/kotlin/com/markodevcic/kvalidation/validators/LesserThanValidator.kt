@@ -1,6 +1,6 @@
 package com.markodevcic.kvalidation.validators
 
-class LesserThanValidator(private val target: Number) : ValidatorBase() {
+class LesserThanValidator(private val target: Number) : PropertyValidatorBase() {
     override fun isValid(result: Any?): Boolean {
         if (result is Number) {
             return result.toDouble() < target.toDouble()

@@ -19,22 +19,22 @@ package com.markodevcic.kvalidation
 import com.markodevcic.kvalidation.validators.*
 
 @Suppress("UNCHECKED_CAST")
-open class RuleBuilder<T, TFor>(protected val valueContext: ValueContext<T, TFor>) {
+open class RuleBuilder<T, TFor>(protected val propertyContext: PropertyContext<T, TFor>) {
 
-    private var currentValidator: Validator? = null
+    private var currentPropertyValidator: PropertyValidator? = null
 
-    protected fun setValidator(validator: Validator) {
-        currentValidator = validator
-        valueContext.validators.add(validator)
+    protected fun setValidator(validator: PropertyValidator) {
+        currentPropertyValidator = validator
+        propertyContext.validators.add(validator)
     }
 
-    infix fun mustBe(validator: Validator): RuleBuilder<T, TFor> {
+    infix fun mustBe(validator: PropertyValidator): RuleBuilder<T, TFor> {
         setValidator(validator)
         return this
     }
 
     infix fun mustBe(predicate: (TFor?) -> Boolean): RuleBuilder<T, TFor> {
-        val validator = object : ValidatorBase() {
+        val validator = object : PropertyValidatorBase() {
             override fun isValid(result: Any?): Boolean {
                 return predicate.invoke(result as TFor?)
             }
@@ -49,7 +49,7 @@ open class RuleBuilder<T, TFor>(protected val valueContext: ValueContext<T, TFor
     }
 
     fun isNull() {
-        if (valueContext.validators.size != 0) {
+        if (propertyContext.validators.size != 0) {
             throw IllegalStateException("can't set is null validator with other validators")
         }
         setValidator(NullValidator())
@@ -106,19 +106,19 @@ open class RuleBuilder<T, TFor>(protected val valueContext: ValueContext<T, TFor
     }
 
     infix fun whenIs(precondition: (T) -> Boolean): RuleBuilder<T, TFor> {
-        currentValidator?.precondition = { c -> precondition.invoke(c as T) }
+        currentPropertyValidator?.precondition = { c -> precondition.invoke(c as T) }
         return this
     }
 
     infix fun whenIsOnAll(precondition: (T) -> Boolean): RuleBuilder<T, TFor> {
-        valueContext.validators.forEach { v ->
+        propertyContext.validators.forEach { v ->
             v.precondition = { c -> precondition.invoke(c as T) }
         }
         return this
     }
 
     fun onError(): OnErrorBuilder<T, TFor> {
-        return OnErrorBuilder(valueContext)
+        return OnErrorBuilder(propertyContext)
     }
 }
 

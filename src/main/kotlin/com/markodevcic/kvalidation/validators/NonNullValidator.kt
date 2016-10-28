@@ -1,6 +1,6 @@
 package com.markodevcic.kvalidation.validators
 
-class NonNullValidator : ValidatorBase() {
+class NonNullValidator : PropertyValidatorBase() {
 
     override fun isValid(result: Any?): Boolean {
         return result != null

@@ -7,7 +7,7 @@ import org.junit.Test
 class DefaultMessageBuilderTest {
 
     @Test
-    fun testClassGet() {
+    fun testDebugMessageGet() {
         val testObject = TestObject()
         val validator = TestObjectValidator(testObject)
 
@@ -24,5 +24,6 @@ class DefaultMessageBuilderTest {
 
         val result = validator.validate()
         val errors = result.validationErrors
+        errors.forEach {  }
     }
 }

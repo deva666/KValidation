@@ -1,6 +1,6 @@
 package com.markodevcic.kvalidation.validators
 
-class NotEqualValidator(private val other: Any?) : ValidatorBase() {
+class NotEqualValidator(private val other: Any?) : PropertyValidatorBase() {
 
     override fun isValid(result: Any?): Boolean {
         return result != other

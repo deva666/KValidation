@@ -18,41 +18,41 @@ package com.markodevcic.kvalidation
 
 import com.markodevcic.kvalidation.async.doAsync
 import com.markodevcic.kvalidation.errors.ValidationError
-import com.markodevcic.kvalidation.validators.Validator
+import com.markodevcic.kvalidation.validators.PropertyValidator
 import java.util.*
 import java.util.concurrent.Executor
 
 abstract class AbstractValidator<T>(private val consumer: T) where T : Any {
-    private val valueContexts: MutableList<ValueContext<T, *>> = ArrayList()
+    private val propertyContexts: MutableList<PropertyContext<T, *>> = ArrayList()
 
     var strategy = ValidationStrategy.FULL
 
     fun <TFor : Any> forValueBuilder(valueFactory: (T) -> TFor?): RuleBuilder<T, TFor> {
-        val valueContext = ValueContext(valueFactory)
-        valueContexts.add(valueContext)
+        val valueContext = PropertyContext(valueFactory)
+        propertyContexts.add(valueContext)
         return RuleBuilder(valueContext)
     }
 
     fun <TFor : Any> forValue(valueFactory: (T) -> TFor?): Creator<T, TFor> {
-        val valueContext = ValueContext(valueFactory)
-        valueContexts.add(valueContext)
+        val valueContext = PropertyContext(valueFactory)
+        propertyContexts.add(valueContext)
         return Creator(valueContext)
     }
 
-    class Creator<T, TFor>(private val valueContext: ValueContext<T, TFor>) {
+    class Creator<T, TFor>(private val propertyContext: PropertyContext<T, TFor>) {
         infix fun rules(ruleInit: RuleSetter<T, TFor>.() -> Unit): Creator<T, TFor> {
-            ruleInit(RuleSetter(valueContext))
+            ruleInit(RuleSetter(propertyContext))
             return this
         }
 
         infix fun onError(onErrorInit: OnErrorSetter<T, TFor>.() -> Unit) {
-            onErrorInit(OnErrorSetter(valueContext))
+            onErrorInit(OnErrorSetter(propertyContext))
         }
     }
 
     fun validate(): ValidationResult {
         val result = ValidationResult()
-        valueContexts.forEach { context ->
+        propertyContexts.forEach { context ->
             val validators = context.validators
             val value = context.valueFactory(consumer)
             validators.forEach { validator ->
@@ -68,11 +68,11 @@ abstract class AbstractValidator<T>(private val consumer: T) where T : Any {
         return result
     }
 
-    private fun <TFor: Any> createValidationError(validator: Validator, value: TFor?, propertyName: String?): ValidationError {
-        val debugMessage = "$validator, received value: $value" +
+    private fun <TFor: Any> createValidationError(propertyValidator: PropertyValidator, value: TFor?, propertyName: String?): ValidationError {
+        val debugMessage = "$propertyValidator, received value: $value" +
                 if (propertyName != null) ", property name: $propertyName" else ""
-        val error = ValidationError(validator.messageBuilder?.getErrorMessage()
-                ?: debugMessage, validator.errorLevel, validator.errorCode, debugMessage)
+        val error = ValidationError(propertyValidator.messageBuilder?.getErrorMessage()
+                ?: debugMessage, propertyValidator.errorLevel, propertyValidator.errorCode, debugMessage)
         return error
     }
 
