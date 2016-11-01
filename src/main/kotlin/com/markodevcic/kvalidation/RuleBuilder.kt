@@ -17,6 +17,7 @@ limitations under the License.
 package com.markodevcic.kvalidation
 
 import com.markodevcic.kvalidation.validators.*
+import java.util.regex.Pattern
 
 @Suppress("UNCHECKED_CAST")
 open class RuleBuilder<T, TFor>(protected val propertyContext: PropertyContext<T, TFor>) {
@@ -100,8 +101,18 @@ open class RuleBuilder<T, TFor>(protected val propertyContext: PropertyContext<T
         return this
     }
 
-    fun inRange(min: Number, max: Number): RuleBuilder<T, TFor>{
+    fun inRange(min: Number, max: Number): RuleBuilder<T, TFor> {
         setValidator(RangeValidator(min, max))
+        return this
+    }
+
+    fun email(): RuleBuilder<T, TFor> {
+        setValidator(EmailValidator())
+        return this
+    }
+
+    fun pattern(pattern: Pattern): RuleBuilder<T, TFor> {
+        setValidator(PatternValidator(pattern))
         return this
     }
 

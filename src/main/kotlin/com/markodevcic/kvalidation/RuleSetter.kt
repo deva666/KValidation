@@ -1,6 +1,7 @@
 package com.markodevcic.kvalidation
 
 import com.markodevcic.kvalidation.validators.*
+import java.util.regex.Pattern
 
 @Suppress("UNCHECKED_CAST")
 class RuleSetter<T, TFor>(private val propertyContext: PropertyContext<T, TFor>) {
@@ -77,6 +78,10 @@ class RuleSetter<T, TFor>(private val propertyContext: PropertyContext<T, TFor>)
 
     fun email() {
         setValidator(EmailValidator())
+    }
+
+    infix fun pattern(pattern: Pattern) {
+        setValidator(PatternValidator(pattern))
     }
 
     infix fun whenIs(precondition: (T) -> Boolean) {
