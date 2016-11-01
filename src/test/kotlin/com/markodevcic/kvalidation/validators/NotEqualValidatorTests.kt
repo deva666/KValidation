@@ -12,7 +12,7 @@ class NotEqualValidatorTests {
         val testObject = TestObject()
         val validator = TestObjectValidator(testObject)
 
-        validator.forValueBuilder { t -> t.weight }
+        validator.forPropertyBuilder { t -> t.weight }
                 .notEqual(Double.NaN)
 
         testObject.weight = 75.0

@@ -14,7 +14,7 @@ class AsyncTests {
         val testObject = TestObject()
         val validator = TestObjectValidator(testObject)
 
-        validator.forValueBuilder { t -> t.name }
+        validator.forPropertyBuilder { t -> t.name }
                 .equal("John")
 
         testObject.name = "John"

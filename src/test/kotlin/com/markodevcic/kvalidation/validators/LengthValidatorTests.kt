@@ -12,7 +12,7 @@ class LengthValidatorTests {
         val testObject = TestObject()
         val validator = TestObjectValidator(testObject)
 
-        validator.forValueBuilder { t -> t.name }
+        validator.forPropertyBuilder { t -> t.name }
                 .length(6)
 
         testObject.name = "John"
@@ -31,7 +31,7 @@ class LengthValidatorTests {
         val testObject = TestObject()
         val validator = TestObjectValidator(testObject)
 
-        validator.forValueBuilder { t -> t.name }
+        validator.forPropertyBuilder { t -> t.name }
                 .length(3, 6)
 
         testObject.name = "John"

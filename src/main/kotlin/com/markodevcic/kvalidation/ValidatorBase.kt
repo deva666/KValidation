@@ -22,21 +22,21 @@ import com.markodevcic.kvalidation.validators.PropertyValidator
 import java.util.*
 import java.util.concurrent.Executor
 
-abstract class AbstractValidator<T>(private val consumer: T) where T : Any {
-    private val propertyContexts: MutableList<PropertyContext<T, *>> = ArrayList()
+abstract class ValidatorBase<T>(private val consumer: T) where T : Any {
+    private val contexts: MutableList<PropertyContext<T, *>> = ArrayList()
 
     var strategy = ValidationStrategy.FULL
 
-    fun <TFor : Any> forValueBuilder(valueFactory: (T) -> TFor?): RuleBuilder<T, TFor> {
-        val valueContext = PropertyContext(valueFactory)
-        propertyContexts.add(valueContext)
-        return RuleBuilder(valueContext)
+    fun <TFor : Any> forPropertyBuilder(valueFactory: (T) -> TFor?): RuleBuilder<T, TFor> {
+        val propertyContext = PropertyContext(valueFactory)
+        contexts.add(propertyContext)
+        return RuleBuilder(propertyContext)
     }
 
-    fun <TFor : Any> forValue(valueFactory: (T) -> TFor?): Creator<T, TFor> {
-        val valueContext = PropertyContext(valueFactory)
-        propertyContexts.add(valueContext)
-        return Creator(valueContext)
+    fun <TFor : Any> forProperty(valueFactory: (T) -> TFor?): Creator<T, TFor> {
+        val propertyContext = PropertyContext(valueFactory)
+        contexts.add(propertyContext)
+        return Creator(propertyContext)
     }
 
     class Creator<T, TFor>(private val propertyContext: PropertyContext<T, TFor>) {
@@ -52,10 +52,9 @@ abstract class AbstractValidator<T>(private val consumer: T) where T : Any {
 
     fun validate(): ValidationResult {
         val result = ValidationResult()
-        propertyContexts.forEach { context ->
-            val validators = context.validators
+        contexts.forEach { context ->
             val value = context.valueFactory(consumer)
-            validators.forEach { validator ->
+            context.validators.forEach { validator ->
                 if (validator.precondition?.invoke(consumer) ?: true && !validator.isValid(value)) {
                     val error = createValidationError(validator, value, context.propertyName)
                     result.validationErrors.add(error)

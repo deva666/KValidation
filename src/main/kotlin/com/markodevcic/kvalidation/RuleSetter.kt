@@ -75,6 +75,10 @@ class RuleSetter<T, TFor>(private val propertyContext: PropertyContext<T, TFor>)
         setValidator(RangeValidator(min, max))
     }
 
+    fun email() {
+        setValidator(EmailValidator())
+    }
+
     infix fun whenIs(precondition: (T) -> Boolean) {
         currentPropertyValidator?.precondition = { c -> precondition.invoke(c as T) }
     }

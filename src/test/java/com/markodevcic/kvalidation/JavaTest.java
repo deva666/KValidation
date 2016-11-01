@@ -10,7 +10,7 @@ public class JavaTest {
         TestObject testObject = new TestObject();
         TestObjectValidator validator = new TestObjectValidator(testObject);
 
-        validator.forValueBuilder(TestObject::getName).nonNull();
+        validator.forPropertyBuilder(TestObject::getName).nonNull();
 
         ValidationResult result = validator.validate();
         Assert.assertTrue(result.isValid());
@@ -22,7 +22,7 @@ public class JavaTest {
         TestObject testObject = new TestObject();
         TestObjectValidator validator = new TestObjectValidator(testObject);
 
-        validator.forValueBuilder(TestObject::getName)
+        validator.forPropertyBuilder(TestObject::getName)
                 .nonNull()
                 .length(3, 6)
                 .mustBe(s -> s.startsWith("J"))

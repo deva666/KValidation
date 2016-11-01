@@ -12,7 +12,7 @@ class EqualValidatorTests {
         val testObject = TestObject()
         val validator = TestObjectValidator(testObject)
 
-        validator.forValueBuilder { t -> t.weight } equal Double.NaN
+        validator.forPropertyBuilder { t -> t.weight } equal Double.NaN
 
         testObject.weight = 75.0
         var result = validator.validate()
