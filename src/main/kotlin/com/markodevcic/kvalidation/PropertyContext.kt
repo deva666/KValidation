@@ -19,6 +19,10 @@ package com.markodevcic.kvalidation
 import com.markodevcic.kvalidation.validators.PropertyValidator
 import java.util.*
 
+/**
+ * Context that holds property value producer, all the validators for specified property and optional property name
+ * @param propertyName if defined, property name will be added to debug messages of [ValidationError] for easier debugging
+ */
 class PropertyContext<in T, out TFor>(val valueFactory: (T) -> TFor?, var propertyName: String? = null) {
     val validators = ArrayList<PropertyValidator>()
 }

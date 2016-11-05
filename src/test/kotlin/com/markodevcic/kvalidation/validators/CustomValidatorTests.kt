@@ -46,6 +46,6 @@ class CustomValidatorTests {
             gt(5)
             notEqual(40)
             whenIsOnAll { t -> t.position != null }
-        } 
+        }
     }
 }
