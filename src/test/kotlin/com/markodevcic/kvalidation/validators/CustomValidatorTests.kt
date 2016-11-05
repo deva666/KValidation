@@ -34,7 +34,6 @@ class CustomValidatorTests {
             notEqual(Int.MAX_VALUE)
             lte(10)
             gte(5)
-        } onError {
         }
 
         testObject.position = 33
@@ -47,8 +46,6 @@ class CustomValidatorTests {
             gt(5)
             notEqual(40)
             whenIsOnAll { t -> t.position != null }
-        } onError {
-
-        }
+        } 
     }
 }

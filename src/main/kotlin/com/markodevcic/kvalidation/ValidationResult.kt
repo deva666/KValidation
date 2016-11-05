@@ -19,6 +19,11 @@ package com.markodevcic.kvalidation
 import com.markodevcic.kvalidation.errors.ValidationError
 import java.util.*
 
+/**
+ * Class that represents result of a validation
+ * @property validationErrors holds all [ValidationError] that occurred
+ * @property isValid is true if validation is without errors
+ */
 class ValidationResult() {
 
     val validationErrors = ArrayList<ValidationError>()

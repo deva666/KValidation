@@ -40,7 +40,7 @@ class PreconditionTests {
             mustBe { v -> v!!.length == 5 }
             whenIs { t -> t.name != null }
         }
-        
+
         testObject.name = null
 
         var result = validator.validate()
