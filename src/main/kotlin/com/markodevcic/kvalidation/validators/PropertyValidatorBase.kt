@@ -3,7 +3,7 @@ package com.markodevcic.kvalidation.validators
 import com.markodevcic.kvalidation.errors.ErrorLevel
 import com.markodevcic.kvalidation.messages.MessageBuilder
 
-abstract class PropertyValidatorBase : PropertyValidator {
+abstract internal class PropertyValidatorBase : PropertyValidator {
 
     protected var _precondition: ((Any) -> Boolean)? = null
     override var precondition: ((Any) -> Boolean)?

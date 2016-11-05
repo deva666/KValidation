@@ -16,7 +16,7 @@ limitations under the License.
 
 package com.markodevcic.kvalidation.validators
 
-class RangeValidator(private val min: Number, private val max: Number): PropertyValidatorBase() {
+internal class RangeValidator(private val min: Number, private val max: Number): PropertyValidatorBase() {
 
     override fun isValid(result: Any?): Boolean {
         if (result is Number) {

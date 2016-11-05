@@ -2,7 +2,7 @@ package com.markodevcic.kvalidation.validators
 
 import java.util.regex.Pattern
 
-class EmailValidator : PatternValidator(emailPattern){
+internal class EmailValidator : PatternValidator(emailPattern){
 
     override fun toString(): String {
         return "Email validator"
