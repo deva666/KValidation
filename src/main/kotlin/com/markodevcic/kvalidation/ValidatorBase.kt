@@ -16,11 +16,9 @@ limitations under the License.
 
 package com.markodevcic.kvalidation
 
-import com.markodevcic.kvalidation.async.doAsync
 import com.markodevcic.kvalidation.errors.ValidationError
 import com.markodevcic.kvalidation.validators.PropertyValidator
 import java.util.*
-import java.util.concurrent.Executor
 
 /**
  * Base class for all validators
@@ -77,6 +75,10 @@ abstract class ValidatorBase<T>(private val consumer: T) where T : Any {
         }
     }
 
+    /**
+     * Validates the object
+     * @return [ValidationResult]
+     */
     fun validate(): ValidationResult {
         val result = ValidationResult()
         contexts.forEach { context ->
@@ -100,13 +102,5 @@ abstract class ValidatorBase<T>(private val consumer: T) where T : Any {
         val error = ValidationError(propertyValidator.messageBuilder?.getErrorMessage()
                 ?: debugMessage, propertyValidator.errorLevel, propertyValidator.errorCode, debugMessage)
         return error
-    }
-
-    fun validateAsync(callback: (ValidationResult?, Exception?) -> Unit) {
-        doAsync({ validate() }, callback)
-    }
-
-    fun validateAsync(callback: (ValidationResult?, Exception?) -> Unit, callbackExecutor: Executor) {
-        doAsync({ validate() }, callback, callbackExecutor)
     }
 }
