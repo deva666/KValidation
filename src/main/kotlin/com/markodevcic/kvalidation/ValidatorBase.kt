@@ -23,20 +23,43 @@ import java.util.*
 import java.util.concurrent.Executor
 
 /**
- * Base Validator class
- * All validator objects have to extend it
+ * Base class for all validators
+ * @param T the type of object being validated
+ * @param consumer the actual object being validated
  */
 abstract class ValidatorBase<T>(private val consumer: T) where T : Any {
     private val contexts: MutableList<PropertyContext<T, *>> = ArrayList()
 
     var strategy = ValidationStrategy.FULL
 
+    /**
+     * Creates a rule builder object for defined property, better suited for use in Java
+     * @sample <
+     *          validator.forPropertyBuilder(SomeObject::getName)
+     *              .notNull()
+     *              .equal("John")
+     * >
+     * @param valueFactory lambda that defines a property from the object being validated
+     * @return [RuleBuilder] object
+     */
     fun <TFor : Any> forPropertyBuilder(valueFactory: (T) -> TFor?): RuleBuilder<T, TFor> {
         val propertyContext = PropertyContext(valueFactory)
         contexts.add(propertyContext)
         return RuleBuilder(propertyContext)
     }
 
+    /**
+     * Creates a rule setter object for defined property, better suited for use in Kotlin
+     * @sample <
+     *          validator.forProperty { t -> t.position } rules {
+     *                  notEqual(7)
+     *                  lte(10)
+     *                  gte(5)
+     *          }
+     *    >
+     * @param valueFactory lambda that defines a property from the object being validated
+     * @return [RuleSetter] object
+     */
     fun <TFor : Any> forProperty(valueFactory: (T) -> TFor?): Creator<T, TFor> {
         val propertyContext = PropertyContext(valueFactory)
         contexts.add(propertyContext)
@@ -71,7 +94,7 @@ abstract class ValidatorBase<T>(private val consumer: T) where T : Any {
         return result
     }
 
-    private fun <TFor: Any> createValidationError(propertyValidator: PropertyValidator, value: TFor?, propertyName: String?): ValidationError {
+    private fun <TFor : Any> createValidationError(propertyValidator: PropertyValidator, value: TFor?, propertyName: String?): ValidationError {
         val debugMessage = "$propertyValidator, received value: ${value ?: "null"}" +
                 if (propertyName != null) ", property name: $propertyName" else ""
         val error = ValidationError(propertyValidator.messageBuilder?.getErrorMessage()
