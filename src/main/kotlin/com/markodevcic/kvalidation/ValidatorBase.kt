@@ -22,6 +22,10 @@ import com.markodevcic.kvalidation.validators.PropertyValidator
 import java.util.*
 import java.util.concurrent.Executor
 
+/**
+ * Base Validator class
+ * All validator objects have to extend it
+ */
 abstract class ValidatorBase<T>(private val consumer: T) where T : Any {
     private val contexts: MutableList<PropertyContext<T, *>> = ArrayList()
 
@@ -68,7 +72,7 @@ abstract class ValidatorBase<T>(private val consumer: T) where T : Any {
     }
 
     private fun <TFor: Any> createValidationError(propertyValidator: PropertyValidator, value: TFor?, propertyName: String?): ValidationError {
-        val debugMessage = "$propertyValidator, received value: $value" +
+        val debugMessage = "$propertyValidator, received value: ${value ?: "null"}" +
                 if (propertyName != null) ", property name: $propertyName" else ""
         val error = ValidationError(propertyValidator.messageBuilder?.getErrorMessage()
                 ?: debugMessage, propertyValidator.errorLevel, propertyValidator.errorCode, debugMessage)

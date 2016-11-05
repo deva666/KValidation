@@ -1,6 +1,5 @@
 package com.markodevcic.kvalidation
 
-import com.markodevcic.kvalidation.PropertyContext
 import com.markodevcic.kvalidation.errors.ErrorLevel
 import com.markodevcic.kvalidation.messages.CustomMessageBuilder
 import com.markodevcic.kvalidation.messages.MessageBuilder
@@ -28,7 +27,7 @@ class OnErrorBuilder<T, TFor>(private val propertyContext: PropertyContext<T, TF
         return this
     }
 
-    infix fun propertyName(name: String) : OnErrorBuilder<T, TFor> {
+    infix fun propertyName(name: String): OnErrorBuilder<T, TFor> {
         propertyContext.propertyName = name
         return this
     }
