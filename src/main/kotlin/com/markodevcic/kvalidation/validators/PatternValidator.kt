@@ -12,4 +12,8 @@ open internal class PatternValidator(private val pattern: Pattern) : PropertyVal
         val matcher = pattern.matcher(result.toString())
         return matcher.matches()
     }
+
+    override fun toString(): String {
+        return "Pattern validator, expected pattern to match $pattern"
+    }
 }
