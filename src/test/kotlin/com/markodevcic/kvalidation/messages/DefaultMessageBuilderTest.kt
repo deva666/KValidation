@@ -22,6 +22,8 @@ class DefaultMessageBuilderTest {
             propertyName("position")
         }
 
+        testObject.position = 2
+
         val result = validator.validate()
         val errors = result.validationErrors
         errors.forEach { e -> Assert.assertTrue(e.message == "you failed") }

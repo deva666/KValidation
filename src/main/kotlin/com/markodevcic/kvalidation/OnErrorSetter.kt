@@ -1,13 +1,13 @@
 package com.markodevcic.kvalidation
 
 import com.markodevcic.kvalidation.errors.ErrorLevel
-import com.markodevcic.kvalidation.messages.CustomMessageBuilder
+import com.markodevcic.kvalidation.messages.DefaultMessageBuilder
 import com.markodevcic.kvalidation.messages.MessageBuilder
 
 class OnErrorSetter<T, TFor>(private val propertyContext: PropertyContext<T, TFor>) {
 
     infix fun errorMessage(message: String) {
-        val messageBuilder = CustomMessageBuilder(message)
+        val messageBuilder = DefaultMessageBuilder(message)
         propertyContext.validators.forEach { v -> v.messageBuilder = messageBuilder }
     }
 
