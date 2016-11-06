@@ -1,6 +1,6 @@
 package com.markodevcic.kvalidation.validators
 
-import com.markodevcic.kvalidation.ValidatorBase
+import com.markodevcic.kvalidation.InnerValidator
 import com.markodevcic.kvalidation.rules
 import org.junit.Assert
 import org.junit.Test
@@ -11,7 +11,7 @@ class EmptyValidatorTest {
     }
 
     private val testable = Testable()
-    private val validator: ValidatorBase<Testable> = object : ValidatorBase<Testable>(testable) {}
+    private val validator = InnerValidator(testable)
 
     @Test
     fun testEmptyCollection() {

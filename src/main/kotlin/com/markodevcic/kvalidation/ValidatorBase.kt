@@ -98,7 +98,3 @@ infix fun <T, TFor> RuleBuilder<T, TFor>.rules(ruleInit: RuleBuilder<T, TFor>.()
 infix fun <T, TFor> RuleBuilder<T, TFor>.onError(onErrorInit: OnErrorBuilder<T, TFor>.() -> Unit) {
     onErrorInit(this.onError())
 }
-
-fun <T : Any> ValidatorBase<T>.initRules(initializer: ValidatorBase<T>.() -> Unit) {
-    initializer(this)
-}
