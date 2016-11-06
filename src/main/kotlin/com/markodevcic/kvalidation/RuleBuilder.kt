@@ -20,7 +20,7 @@ import com.markodevcic.kvalidation.validators.*
 import java.util.regex.Pattern
 
 @Suppress("UNCHECKED_CAST")
-class RuleBuilder<T, TFor>(val propertyContext: PropertyContext<T, TFor>) {
+class RuleBuilder<T, TProperty>(val propertyContext: PropertyContext<T, TProperty>) {
 
     private var currentPropertyValidator: PropertyValidator? = null
 
@@ -32,7 +32,7 @@ class RuleBuilder<T, TFor>(val propertyContext: PropertyContext<T, TFor>) {
     /**
      * Sets a custom validator
      */
-    infix fun setValidator(validator: PropertyValidator): RuleBuilder<T, TFor> {
+    infix fun setValidator(validator: PropertyValidator): RuleBuilder<T, TProperty> {
         setValidatorInternal(validator)
         return this
     }
@@ -41,10 +41,10 @@ class RuleBuilder<T, TFor>(val propertyContext: PropertyContext<T, TFor>) {
      * Sets a custom rule
      * @param predicate method accepting validated property and returning a boolean value indicating if the property is valid
      */
-    infix fun mustBe(predicate: (TFor?) -> Boolean): RuleBuilder<T, TFor> {
+    infix fun mustBe(predicate: (TProperty?) -> Boolean): RuleBuilder<T, TProperty> {
         val validator = object : PropertyValidatorBase() {
             override fun isValid(result: Any?): Boolean {
-                return predicate.invoke(result as TFor?)
+                return predicate.invoke(result as TProperty?)
             }
         }
         setValidatorInternal(validator)
@@ -54,7 +54,7 @@ class RuleBuilder<T, TFor>(val propertyContext: PropertyContext<T, TFor>) {
     /**
      * Sets the rule that property must not be null
      */
-    fun nonNull(): RuleBuilder<T, TFor> {
+    fun nonNull(): RuleBuilder<T, TProperty> {
         setValidatorInternal(NonNullValidator())
         return this
     }
@@ -74,7 +74,7 @@ class RuleBuilder<T, TFor>(val propertyContext: PropertyContext<T, TFor>) {
     /**
      * Sets the rule that defines maximum length of string value of property
      */
-    infix fun length(max: Int): RuleBuilder<T, TFor> {
+    infix fun length(max: Int): RuleBuilder<T, TProperty> {
         setValidatorInternal(LengthValidator(0, max))
         return this
     }
@@ -82,7 +82,7 @@ class RuleBuilder<T, TFor>(val propertyContext: PropertyContext<T, TFor>) {
     /**
      * Sets the rule that defines minimum and maximum length of string value of property
      */
-    fun length(min: Int, max: Int): RuleBuilder<T, TFor> {
+    fun length(min: Int, max: Int): RuleBuilder<T, TProperty> {
         setValidatorInternal(LengthValidator(min, max))
         return this
     }
@@ -91,7 +91,7 @@ class RuleBuilder<T, TFor>(val propertyContext: PropertyContext<T, TFor>) {
      * Sets the rule that property should be equal to another object of same type
      * Uses that type's equals method for comparison
      */
-    infix fun equal(other: TFor): RuleBuilder<T, TFor> {
+    infix fun equal(other: TProperty): RuleBuilder<T, TProperty> {
         setValidatorInternal(EqualValidator(other))
         return this
     }
@@ -100,7 +100,7 @@ class RuleBuilder<T, TFor>(val propertyContext: PropertyContext<T, TFor>) {
      * Sets the rule that property should not be equal to another object of same type
      * Uses that type's equals method for comparison
      */
-    infix fun notEqual(other: TFor): RuleBuilder<T, TFor> {
+    infix fun notEqual(other: TProperty): RuleBuilder<T, TProperty> {
         setValidatorInternal(NotEqualValidator(other))
         return this
     }
@@ -109,7 +109,7 @@ class RuleBuilder<T, TFor>(val propertyContext: PropertyContext<T, TFor>) {
      * Sets the rule that property should be less than defined [Number]
      * If property being validated is not subclass of [Number], validation fails
      */
-    infix fun lt(other: Number): RuleBuilder<T, TFor> {
+    infix fun lt(other: Number): RuleBuilder<T, TProperty> {
         setValidatorInternal(LesserThanValidator(other))
         return this
     }
@@ -118,7 +118,7 @@ class RuleBuilder<T, TFor>(val propertyContext: PropertyContext<T, TFor>) {
      * Sets the rule that property should be greater than defined [Number]
      * If property being validated is not subclass of [Number], validation fails
      */
-    infix fun gt(other: Number): RuleBuilder<T, TFor> {
+    infix fun gt(other: Number): RuleBuilder<T, TProperty> {
         setValidatorInternal(GreaterThanValidator(other))
         return this
     }
@@ -127,7 +127,7 @@ class RuleBuilder<T, TFor>(val propertyContext: PropertyContext<T, TFor>) {
      * Sets the rule that property should be less or equal than defined [Number]
      * If property being validated is not subclass of [Number], validation fails
      */
-    infix fun lte(other: Number): RuleBuilder<T, TFor> {
+    infix fun lte(other: Number): RuleBuilder<T, TProperty> {
         setValidatorInternal(LesserOrEqualThanValidator(other))
         return this
     }
@@ -136,7 +136,7 @@ class RuleBuilder<T, TFor>(val propertyContext: PropertyContext<T, TFor>) {
      * Sets the rule that property should be greater or equal than defined [Number]
      * If property being validated is not subclass of [Number], validation fails
      */
-    infix fun gte(other: Number): RuleBuilder<T, TFor> {
+    infix fun gte(other: Number): RuleBuilder<T, TProperty> {
         setValidatorInternal(GreaterOrEqualThanValidator(other))
         return this
     }
@@ -144,7 +144,7 @@ class RuleBuilder<T, TFor>(val propertyContext: PropertyContext<T, TFor>) {
     /**
      * Sets the rule that property should be inside defined [Iterable]
      */
-    infix fun isContainedIn(source: Iterable<TFor>): RuleBuilder<T, TFor> {
+    infix fun isContainedIn(source: Iterable<TProperty>): RuleBuilder<T, TProperty> {
         setValidatorInternal(ContainsValidator(source))
         return this
     }
@@ -153,7 +153,7 @@ class RuleBuilder<T, TFor>(val propertyContext: PropertyContext<T, TFor>) {
      * Sets the rule that property should be between two numbers
      * If property being validated is not subclass of [Number], validation fails
      */
-    fun inRange(min: Number, max: Number): RuleBuilder<T, TFor> {
+    fun inRange(min: Number, max: Number): RuleBuilder<T, TProperty> {
         setValidatorInternal(RangeValidator(min, max))
         return this
     }
@@ -162,7 +162,7 @@ class RuleBuilder<T, TFor>(val propertyContext: PropertyContext<T, TFor>) {
      * Sets the rule that property should not contain any elements
      * If property being validated is not subclass of [Iterable], validation fails
      */
-    fun empty(): RuleBuilder<T, TFor> {
+    fun empty(): RuleBuilder<T, TProperty> {
         setValidatorInternal(EmptyValidator())
         return this
     }
@@ -170,7 +170,7 @@ class RuleBuilder<T, TFor>(val propertyContext: PropertyContext<T, TFor>) {
     /**
      * Sets the rule that string value of property should match an email regex
      */
-    fun email(): RuleBuilder<T, TFor> {
+    fun email(): RuleBuilder<T, TProperty> {
         setValidatorInternal(EmailValidator())
         return this
     }
@@ -178,7 +178,7 @@ class RuleBuilder<T, TFor>(val propertyContext: PropertyContext<T, TFor>) {
     /**
      * Sets the rule that string value of property should match passed [Pattern]
      */
-    fun pattern(pattern: Pattern): RuleBuilder<T, TFor> {
+    fun pattern(pattern: Pattern): RuleBuilder<T, TProperty> {
         setValidatorInternal(PatternValidator(pattern))
         return this
     }
@@ -193,7 +193,7 @@ class RuleBuilder<T, TFor>(val propertyContext: PropertyContext<T, TFor>) {
      *      whenIs { t -> t.position > 3 } //length validator will be executed only when position is larger than 3, nonNull validator executes always
      *  }
      */
-    infix fun whenIs(precondition: (T) -> Boolean): RuleBuilder<T, TFor> {
+    infix fun whenIs(precondition: (T) -> Boolean): RuleBuilder<T, TProperty> {
         currentPropertyValidator?.precondition = { c -> precondition.invoke(c as T) }
         return this
     }
@@ -208,7 +208,7 @@ class RuleBuilder<T, TFor>(val propertyContext: PropertyContext<T, TFor>) {
      *      whenIsOnAll { t -> t.position > 3 } //length and nonNull validator will be executed only when position is larger than 3
      *  }
      */
-    infix fun whenIsOnAll(precondition: (T) -> Boolean): RuleBuilder<T, TFor> {
+    infix fun whenIsOnAll(precondition: (T) -> Boolean): RuleBuilder<T, TProperty> {
         propertyContext.validators.forEach { v ->
             v.precondition = { c -> precondition.invoke(c as T) }
         }
@@ -218,7 +218,7 @@ class RuleBuilder<T, TFor>(val propertyContext: PropertyContext<T, TFor>) {
     /**
      * Returns an [OnErrorBuilder] object for defining on error properties
      */
-    fun onError(): OnErrorBuilder<T, TFor> {
+    fun onError(): OnErrorBuilder<T, TProperty> {
         return OnErrorBuilder(propertyContext)
     }
 }

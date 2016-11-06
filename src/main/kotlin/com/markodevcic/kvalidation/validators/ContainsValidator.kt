@@ -16,7 +16,7 @@ limitations under the License.
 
 package com.markodevcic.kvalidation.validators
 
-internal class ContainsValidator<out TFor>(val source: Iterable<TFor>) : PropertyValidatorBase() {
+internal class ContainsValidator<out TProperty>(val source: Iterable<TProperty>) : PropertyValidatorBase() {
 
     override fun isValid(result: Any?): Boolean {
         return source.contains(result)

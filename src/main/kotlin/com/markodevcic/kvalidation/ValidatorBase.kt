@@ -38,7 +38,7 @@ abstract class ValidatorBase<T>(private val consumer: T) : Validator where T : A
      * @param valueFactory lambda that defines a property from the object being validated
      * @return [RuleBuilder] object
      */
-    fun <TFor : Any> forProperty(valueFactory: (T) -> TFor?): RuleBuilder<T, TFor> {
+    fun <TProperty : Any> forProperty(valueFactory: (T) -> TProperty?): RuleBuilder<T, TProperty> {
         val propertyContext = PropertyContext(valueFactory)
         contexts.add(propertyContext)
         return RuleBuilder(propertyContext)
@@ -72,7 +72,7 @@ abstract class ValidatorBase<T>(private val consumer: T) : Validator where T : A
         contexts.clear()
     }
 
-    private fun <TFor : Any> createValidationError(propertyValidator: PropertyValidator, value: TFor?, propertyName: String?): ValidationError {
+    private fun <TProperty : Any> createValidationError(propertyValidator: PropertyValidator, value: TProperty?, propertyName: String?): ValidationError {
         val debugMessage = "$propertyValidator, received value: ${value ?: "null"}" +
                 if (propertyName != null) ", property name: $propertyName" else ""
         val error = ValidationError(propertyValidator.messageBuilder?.getErrorMessage()
@@ -88,7 +88,7 @@ abstract class ValidatorBase<T>(private val consumer: T) : Validator where T : A
  *      equal("John")
  * }
  */
-infix fun <T, TFor> RuleBuilder<T, TFor>.rules(ruleInit: RuleBuilder<T, TFor>.() -> Unit): RuleBuilder<T, TFor> {
+infix fun <T, TProperty> RuleBuilder<T, TProperty>.rules(ruleInit: RuleBuilder<T, TProperty>.() -> Unit): RuleBuilder<T, TProperty> {
     ruleInit.invoke(this)
     return this
 }
@@ -102,6 +102,6 @@ infix fun <T, TFor> RuleBuilder<T, TFor>.rules(ruleInit: RuleBuilder<T, TFor>.()
  *      errorMessage("Name must be not null and John")
  * }
  */
-infix fun <T, TFor> RuleBuilder<T, TFor>.onError(onErrorInit: OnErrorBuilder<T, TFor>.() -> Unit) {
+infix fun <T, TProperty> RuleBuilder<T, TProperty>.onError(onErrorInit: OnErrorBuilder<T, TProperty>.() -> Unit) {
     onErrorInit(this.onError())
 }

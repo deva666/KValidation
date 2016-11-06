@@ -20,12 +20,12 @@ import com.markodevcic.kvalidation.errors.ErrorLevel
 import com.markodevcic.kvalidation.messages.DefaultMessageBuilder
 import com.markodevcic.kvalidation.messages.MessageBuilder
 
-class OnErrorBuilder<T, TFor>(private val propertyContext: PropertyContext<T, TFor>) {
+class OnErrorBuilder<T, TProperty>(private val propertyContext: PropertyContext<T, TProperty>) {
 
     /**
      * Sets the message to display when validation fails
      */
-    infix fun errorMessage(message: String): OnErrorBuilder<T, TFor> {
+    infix fun errorMessage(message: String): OnErrorBuilder<T, TProperty> {
         val messageBuilder = DefaultMessageBuilder(message)
         propertyContext.validators.forEach { v -> v.messageBuilder = messageBuilder }
         return this
@@ -36,7 +36,7 @@ class OnErrorBuilder<T, TFor>(private val propertyContext: PropertyContext<T, TF
      * For example, in Android getting a string from resources requires an instance of Context class
      * So custom message builder which gets a string from Android resources can be passed here
      */
-    infix fun errorMessage(messageBuilder: MessageBuilder): OnErrorBuilder<T, TFor> {
+    infix fun errorMessage(messageBuilder: MessageBuilder): OnErrorBuilder<T, TProperty> {
         propertyContext.validators.forEach { v -> v.messageBuilder = messageBuilder }
         return this
     }
@@ -44,7 +44,7 @@ class OnErrorBuilder<T, TFor>(private val propertyContext: PropertyContext<T, TF
     /**
      * Sets the error code for validated property
      */
-    infix fun errorCode(code: Int): OnErrorBuilder<T, TFor> {
+    infix fun errorCode(code: Int): OnErrorBuilder<T, TProperty> {
         propertyContext.validators.forEach { v -> v.errorCode = code }
         return this
     }
@@ -52,7 +52,7 @@ class OnErrorBuilder<T, TFor>(private val propertyContext: PropertyContext<T, TF
     /**
      * Sets the error level for validated property
      */
-    infix fun errorLevel(errorLevel: ErrorLevel): OnErrorBuilder<T, TFor> {
+    infix fun errorLevel(errorLevel: ErrorLevel): OnErrorBuilder<T, TProperty> {
         propertyContext.validators.forEach { v -> v.errorLevel = errorLevel }
         return this
     }
@@ -61,7 +61,7 @@ class OnErrorBuilder<T, TFor>(private val propertyContext: PropertyContext<T, TF
      * Set the name of property being validated.
      * The name is displayed in each @see ValidationError debug message, for easier debugging
      */
-    infix fun propertyName(name: String): OnErrorBuilder<T, TFor> {
+    infix fun propertyName(name: String): OnErrorBuilder<T, TProperty> {
         propertyContext.propertyName = name
         return this
     }
