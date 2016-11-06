@@ -2,12 +2,13 @@ package com.markodevcic.kvalidation.messages
 
 import com.markodevcic.kvalidation.TestObject
 import com.markodevcic.kvalidation.TestObjectValidator
+import org.junit.Assert
 import org.junit.Test
 
 class DefaultMessageBuilderTest {
 
     @Test
-    fun testDebugMessageGet() {
+    fun testMessageSet() {
         val testObject = TestObject()
         val validator = TestObjectValidator(testObject)
 
@@ -17,13 +18,12 @@ class DefaultMessageBuilderTest {
             lt(1)
             inRange(300, 30000)
         } onError {
+            errorMessage("you failed")
             propertyName("position")
         }
 
-        testObject.position = 2
-
         val result = validator.validate()
         val errors = result.validationErrors
-        errors.forEach {  }
+        errors.forEach { e -> Assert.assertTrue(e.message == "you failed") }
     }
 }
