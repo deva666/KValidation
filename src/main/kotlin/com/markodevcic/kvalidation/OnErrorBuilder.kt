@@ -22,27 +22,45 @@ import com.markodevcic.kvalidation.messages.MessageBuilder
 
 class OnErrorBuilder<T, TFor>(private val propertyContext: PropertyContext<T, TFor>) {
 
+    /**
+     * Sets the message to display when validation fails
+     */
     infix fun errorMessage(message: String): OnErrorBuilder<T, TFor> {
         val messageBuilder = DefaultMessageBuilder(message)
         propertyContext.validators.forEach { v -> v.messageBuilder = messageBuilder }
         return this
     }
 
+    /**
+     * Sets the [MessageBuilder] to display error message for failed validation
+     * For example, in Android getting a string from resources requires an instance of Context class
+     * So custom message builder can be passed here
+     */
     infix fun errorMessage(messageBuilder: MessageBuilder): OnErrorBuilder<T, TFor> {
         propertyContext.validators.forEach { v -> v.messageBuilder = messageBuilder }
         return this
     }
 
+    /**
+     * Sets the error code for validated property
+     */
     infix fun errorCode(code: Int): OnErrorBuilder<T, TFor> {
         propertyContext.validators.forEach { v -> v.errorCode = code }
         return this
     }
 
+    /**
+     * Sets the error level for validated property
+     */
     infix fun errorLevel(errorLevel: ErrorLevel): OnErrorBuilder<T, TFor> {
         propertyContext.validators.forEach { v -> v.errorLevel = errorLevel }
         return this
     }
 
+    /**
+     * Set the name of property being validated.
+     * The name is displayed in each @see ValidationError debug message, for easier debugging
+     */
     infix fun propertyName(name: String): OnErrorBuilder<T, TFor> {
         propertyContext.propertyName = name
         return this
