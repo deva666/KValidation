@@ -34,7 +34,7 @@ class OnErrorBuilder<T, TFor>(private val propertyContext: PropertyContext<T, TF
     /**
      * Sets the [MessageBuilder] to display error message for failed validation
      * For example, in Android getting a string from resources requires an instance of Context class
-     * So custom message builder can be passed here
+     * So custom message builder which gets a string from Android resources can be passed here
      */
     infix fun errorMessage(messageBuilder: MessageBuilder): OnErrorBuilder<T, TFor> {
         propertyContext.validators.forEach { v -> v.messageBuilder = messageBuilder }
