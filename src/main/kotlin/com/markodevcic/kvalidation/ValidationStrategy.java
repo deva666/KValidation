@@ -17,7 +17,7 @@ limitations under the License.
 package com.markodevcic.kvalidation;
 
 /**
- * Enum class that defines if validation should stop on first error it receives or it returns all errors that occurred
+ * Enum class that defines if validation should stop on first error it receives or should it return all errors that occurred
  */
 public enum ValidationStrategy {
     FULL,
