@@ -4,6 +4,7 @@
 
 * simple - not bloated with features
 * fast - no reflection
+* readable
 * written in Kotlin
 
 ---------------
