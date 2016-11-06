@@ -25,25 +25,16 @@ import java.util.*
  * @param T the type of object being validated
  * @param consumer the actual object being validated
  */
-abstract class ValidatorBase<T>(private val consumer: T) where T : Any {
+abstract class ValidatorBase<T>(private val consumer: T) : Validator where T : Any {
     private val contexts: MutableList<PropertyContext<T, *>> = ArrayList()
 
     var strategy = ValidationStrategy.FULL
 
     /**
      * Creates a rule builder object for defined property
-     * @sample <
-     *          //Java
-     *          validator.forProperty(SomeObject::getName)
+     * @sample validator.forProperty(SomeObject::getName)
      *              .notNull()
      *              .equal("John")
-     *
-     *          //Kotlin
-     *          validator.forProperty { t -> t.name } rules {
-     *              notNull()
-     *              equal("John")
-     *          }
-     * >
      * @param valueFactory lambda that defines a property from the object being validated
      * @return [RuleBuilder] object
      */
@@ -57,7 +48,7 @@ abstract class ValidatorBase<T>(private val consumer: T) where T : Any {
      * Validates the object
      * @return [ValidationResult]
      */
-    fun validate(): ValidationResult {
+    override fun validate(): ValidationResult {
         val result = ValidationResult()
         contexts.forEach { context ->
             val value = context.valueFactory(consumer)
@@ -90,11 +81,27 @@ abstract class ValidatorBase<T>(private val consumer: T) where T : Any {
     }
 }
 
+/**
+ * Extension function for defining rules, enables more readable syntax in Kotlin
+ * @sample validator.forProperty {t -> t.name} rules {
+ *      nonNull()
+ *      equal("John")
+ * }
+ */
 infix fun <T, TFor> RuleBuilder<T, TFor>.rules(ruleInit: RuleBuilder<T, TFor>.() -> Unit): RuleBuilder<T, TFor> {
     ruleInit.invoke(this)
     return this
 }
 
+/**
+ * Extension function for defining on error properties, enables more readable syntax in Kotlin
+ * @sample validator.forProperty {t -> t.name} rules {
+ *      nonNull()
+ *      equal("John")
+ * } onError {
+ *      errorMessage("Name must be not null and John")
+ * }
+ */
 infix fun <T, TFor> RuleBuilder<T, TFor>.onError(onErrorInit: OnErrorBuilder<T, TFor>.() -> Unit) {
     onErrorInit(this.onError())
 }
