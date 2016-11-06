@@ -55,6 +55,10 @@ If you don't want to create a validator class, add InnerValidator inside the val
      }
 ```
 ----------------------------------------------------
+### Contributing ###
+Contributions are always welcome, just start the project and submit a pull request.
+
+---------------------------------------------------
 
 Written by [Marko Devcic](http://www.markodevcic.com)
 
