@@ -16,11 +16,8 @@ limitations under the License.
 
 package com.markodevcic.kvalidation.messages
 
-import com.markodevcic.kvalidation.validators.Validator
-
-class DefaultMessageBuilder(private val valueClass: Class<*>, private val validator:Validator) : MessageBuilder{
-
+class DefaultMessageBuilder(private val message: String) : MessageBuilder {
     override fun getErrorMessage(): String {
-        return "Field of type: ${valueClass.toString()} failed the validation: ${validator.toString()}."
+        return message
     }
 }

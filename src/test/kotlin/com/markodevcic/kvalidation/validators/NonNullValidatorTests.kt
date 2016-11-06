@@ -1,10 +1,10 @@
 package com.markodevcic.kvalidation.validators
 
-
 import com.markodevcic.kvalidation.TestObject
 import com.markodevcic.kvalidation.TestObjectValidator
 import org.junit.Assert
 import org.junit.Test
+
 
 class NonNullValidatorTests {
 
@@ -12,7 +12,7 @@ class NonNullValidatorTests {
     fun testNonNull() {
         val testObject = TestObject()
         val validator = TestObjectValidator(testObject)
-        validator.newRule { t -> t.name }
+        validator.forProperty { t -> t.name }
                 .nonNull()
 
         testObject.name = null

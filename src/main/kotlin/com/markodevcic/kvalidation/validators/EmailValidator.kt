@@ -14,19 +14,17 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package com.markodevcic.kvalidation.async
+package com.markodevcic.kvalidation.validators
 
-import java.util.concurrent.Executor
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
+import java.util.regex.Pattern
 
-object AsyncExecutors {
-    val ioExecutor: Executor by lazy {
-        Executors.newCachedThreadPool()
+internal class EmailValidator : PatternValidator(emailPattern) {
+
+    override fun toString(): String {
+        return "Email validator"
     }
 
-    val cpuBoundExecutor: ExecutorService by lazy {
-        val cpuCount = Runtime.getRuntime().availableProcessors()
-        return@lazy Executors.newFixedThreadPool(cpuCount)
+    companion object {
+        val emailPattern = Pattern.compile("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$")
     }
 }

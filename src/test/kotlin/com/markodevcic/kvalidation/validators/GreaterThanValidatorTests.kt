@@ -12,7 +12,7 @@ class GreaterThanValidatorTests {
         val testObject = TestObject()
         val validator = TestObjectValidator(testObject)
 
-        validator.newRule { t -> t.position }
+        validator.forProperty { t -> t.position }
                 .gt(100)
 
         testObject.position = 101
@@ -29,7 +29,7 @@ class GreaterThanValidatorTests {
         val testObject = TestObject()
         val validator = TestObjectValidator(testObject)
 
-        validator.newRule { t -> t.weight }
+        validator.forProperty { t -> t.weight }
                 .gt(100.0)
 
         testObject.weight = 100.1
@@ -41,14 +41,4 @@ class GreaterThanValidatorTests {
         Assert.assertFalse(result.isValid)
     }
 
-    @Test(expected = IllegalArgumentException::class)
-    fun testInvalidArgument() {
-        val testObject = TestObject()
-        val validator = TestObjectValidator(testObject)
-
-        validator.newRule { t -> t.name }
-                .gt(200)
-
-        val result = validator.validate()
-    }
 }

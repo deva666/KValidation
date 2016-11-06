@@ -16,20 +16,20 @@ limitations under the License.
 
 package com.markodevcic.kvalidation
 
-import com.markodevcic.kvalidation.errors.ValidationError
-import java.util.*
-
 /**
- * Class that represents result of a validation
- * @property validationErrors holds all [ValidationError] that occurred
- * @property isValid is true if validation is without errors
+ * Validator class that can be used inside of validated object
+ * @sample class Person(private val name: String, private val age: Int) {
+ *              val validator = InnerValidator(this) setRules {
+ *                  forProperty { p -> p.name } rules {
+ *                      equal("John")
+ *                  }
+ *              }
+ *          }
  */
-class ValidationResult() {
+class InnerValidator<T>(instance: T) : ValidatorBase<T>(instance) where T : Any {
+}
 
-    val validationErrors = ArrayList<ValidationError>()
-
-    val isValid: Boolean
-        get () {
-            return validationErrors.size == 0
-        }
+infix fun <T> InnerValidator<T>.setRules(initializer: InnerValidator<T>.() -> Unit): InnerValidator<T> where T : Any {
+    initializer(this)
+    return this
 }

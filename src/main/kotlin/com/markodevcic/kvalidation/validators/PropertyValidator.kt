@@ -16,12 +16,13 @@ limitations under the License.
 
 package com.markodevcic.kvalidation.validators
 
-internal class EqualValidator(private val other: Any?) : PropertyValidatorBase() {
-    override fun isValid(result: Any?): Boolean {
-        return result == other
-    }
+import com.markodevcic.kvalidation.errors.ErrorLevel
+import com.markodevcic.kvalidation.messages.MessageBuilder
 
-    override fun toString(): String {
-        return "Equality validator, expected equal to: $other"
-    }
+interface PropertyValidator {
+    fun isValid(result: Any?): Boolean
+    var precondition: ((Any) -> Boolean)?
+    var messageBuilder: MessageBuilder?
+    var errorCode: Int?
+    var errorLevel: ErrorLevel
 }

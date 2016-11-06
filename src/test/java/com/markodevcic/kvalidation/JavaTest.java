@@ -3,56 +3,40 @@ package com.markodevcic.kvalidation;
 import org.junit.Assert;
 import org.junit.Test;
 
-import kotlin.jvm.functions.Function1;
-
 public class JavaTest {
 
-	@Test
-	public void testNonNullValidator() {
-		TestObject testObject = new TestObject();
-		TestObjectValidator validator = new TestObjectValidator(testObject);
+    @Test
+    public void testNonNullValidator() {
+        TestObject testObject = new TestObject();
+        TestObjectValidator validator = new TestObjectValidator(testObject);
 
-		validator.newRule(new Function1<TestObject,String>() {
-			public String invoke(TestObject testObject) {
-				return testObject.getName();
-			}
-		}).nonNull();
+        validator.forProperty(TestObject::getName).nonNull();
 
-		ValidationResult result = validator.validate();
-		Assert.assertTrue(result.isValid());
-		Assert.assertTrue(result.getValidationErrors().size() == 0);
-	}
+        ValidationResult result = validator.validate();
+        Assert.assertTrue(result.isValid());
+        Assert.assertTrue(result.getValidationErrors().isEmpty());
+    }
 
-	@Test
-	public void testRulesChaining() {
-		TestObject testObject = new TestObject();
-		TestObjectValidator validator = new TestObjectValidator(testObject);
+    @Test
+    public void testRulesChaining() {
+        TestObject testObject = new TestObject();
+        TestObjectValidator validator = new TestObjectValidator(testObject);
 
-		validator.newRule(new Fun())
-				.nonNull()
-				.length(3, 6)
-				.mustBe(new Function1<String,Boolean>() {
-					@Override
-					public Boolean invoke(String s) {
-						return s.startsWith("J");
-					}
-				});
+        validator.forProperty(TestObject::getName)
+                .nonNull()
+                .length(3, 6)
+                .mustBe(s -> s.startsWith("J"))
+                .onError()
+                .propertyName("name");
 
-		testObject.setName("Patrick");
-		ValidationResult result = validator.validate();
-		Assert.assertFalse(result.isValid());
-		Assert.assertEquals(2, result.getValidationErrors().size());
+        testObject.setName("Patrick");
+        ValidationResult result = validator.validate();
+        Assert.assertFalse(result.isValid());
+        Assert.assertEquals(2, result.getValidationErrors().size());
 
-		testObject.setName("John");
-		result = validator.validate();
-		Assert.assertTrue(result.isValid());
-		Assert.assertEquals(0, result.getValidationErrors().size());
-	}
-
-	private static class Fun implements Function1<TestObject, String>{
-		@Override
-		public String invoke(TestObject testObject) {
-			return testObject.getName();
-		}
-	}
+        testObject.setName("John");
+        result = validator.validate();
+        Assert.assertTrue(result.isValid());
+        Assert.assertEquals(0, result.getValidationErrors().size());
+    }
 }

@@ -16,12 +16,13 @@ limitations under the License.
 
 package com.markodevcic.kvalidation.validators
 
-internal class EqualValidator(private val other: Any?) : PropertyValidatorBase() {
+internal class ContainsValidator<out TProperty>(val source: Iterable<TProperty>) : PropertyValidatorBase() {
+
     override fun isValid(result: Any?): Boolean {
-        return result == other
+        return source.contains(result)
     }
 
     override fun toString(): String {
-        return "Equality validator, expected equal to: $other"
+        return "Contains validator, expected value to be in collection $source"
     }
 }

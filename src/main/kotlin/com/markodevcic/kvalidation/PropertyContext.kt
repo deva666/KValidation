@@ -14,14 +14,15 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package com.markodevcic.kvalidation.validators
+package com.markodevcic.kvalidation
 
-internal class EqualValidator(private val other: Any?) : PropertyValidatorBase() {
-    override fun isValid(result: Any?): Boolean {
-        return result == other
-    }
+import com.markodevcic.kvalidation.validators.PropertyValidator
+import java.util.*
 
-    override fun toString(): String {
-        return "Equality validator, expected equal to: $other"
-    }
+/**
+ * Context that holds property value producer, all the validators for specified property and optional property name
+ * @param propertyName if defined, property name will be added to debug messages of [ValidationError] for easier debugging
+ */
+class PropertyContext<in T, out TProperty>(val valueFactory: (T) -> TProperty?, var propertyName: String? = null) {
+    val validators = ArrayList<PropertyValidator>()
 }

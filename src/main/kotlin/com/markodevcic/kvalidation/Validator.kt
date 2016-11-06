@@ -14,14 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package com.markodevcic.kvalidation.validators
+package com.markodevcic.kvalidation
 
-internal class EqualValidator(private val other: Any?) : PropertyValidatorBase() {
-    override fun isValid(result: Any?): Boolean {
-        return result == other
-    }
-
-    override fun toString(): String {
-        return "Equality validator, expected equal to: $other"
-    }
+interface Validator {
+    fun validate(): ValidationResult
 }

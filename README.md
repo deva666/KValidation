@@ -4,30 +4,57 @@
 
 * simple - not bloated with features
 * fast - no reflection
+* readable
 * written in Kotlin
 
 ---------------
 ### Example: ###
 
+In Java
+
 ```java
 Person person = new Person();
 PersonValidator validator = new PersonValidator(person);
 
-validator.newRule(p -> p.name)
-         .length(4)
-         .mustBe(n -> n.startsWith("J"))
-         .notEqual("John")
-         .onAll()
-         .errorMessage("Name should start with J, be 4 characters in length and not be John");
+validator.forProperty(Person::getName)
+             .length(4)
+             .mustBe(n -> n.startsWith("J"))
+             .notEqual("John")
+             .onError()
+             .errorMessage("Name should start with J, be 4 characters in length and not be John");
 
 ValidationResult result = validator.validate();
 ```
-------------
 
-### How to use it ###
-[Download](https://bitbucket.org/deva666/kvalidation/downloads/kvalidation-1.0-SNAPSHOT.jar) the jar file and include it in your project.
+Kotlin has even nicer syntax
 
----------------
+```
+    val person = Person()
+    val validator = PersonValidator(person)
+    
+    validator.forProperty { p -> p.name } rules {
+        length(4)
+        mustBe { n -> n.startsWith("J") }
+        notEqual("John")
+    } onError {
+        errorMessage("Name should start with J, be 4 characters in length and not be John")
+    }
+    
+    val result = validator.validate()
+```
+
+If you don't want to create a validator class, add InnerValidator inside the validated class
+
+```
+    class Person(private val name: String, private val age: Int) {
+        val validator = InnerValidator(this) setRules {
+            forProperty { p -> p.name } rules {
+                equal("John")
+            }
+        }
+     }
+```
+----------------------------------------------------
 
 Written by [Marko Devcic](http://www.markodevcic.com)
 

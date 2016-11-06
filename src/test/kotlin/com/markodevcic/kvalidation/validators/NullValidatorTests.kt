@@ -10,7 +10,7 @@ class NullValidatorTests {
     fun testNonNull() {
         val testObject = TestObject()
         val validator = TestObjectValidator(testObject)
-        validator.newRule { t -> t.name }
+        validator.forProperty { t -> t.name }
                 .isNull()
 
         testObject.name = null

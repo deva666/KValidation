@@ -11,12 +11,13 @@ class AbstractValidatorTests {
         val testObject = TestObject()
         val validator = TestObjectValidator(testObject)
 
-        validator.newRule { t -> t.name }
-                .length(4)
-                .mustBe { t -> t!!.startsWith("J") }
-                .equal("John")
-                .onAll()
-                .errorLevel(ErrorLevel.WARNING)
+        validator.forProperty { t -> t.name } rules {
+            length(4)
+            mustBe { t -> t!!.startsWith("J") }
+            equal("John")
+        } onError {
+            errorLevel(ErrorLevel.WARNING)
+        }
         validator.strategy = ValidationStrategy.FULL
 
         testObject.name = "Patrick"
@@ -32,12 +33,13 @@ class AbstractValidatorTests {
         val testObject = TestObject()
         val validator = TestObjectValidator(testObject)
 
-        validator.newRule { t -> t.name }
-                .length(4)
-                .mustBe { t -> t!!.startsWith("J") }
-                .equal("John")
-                .onAll()
-                .errorMessage("fail")
+        validator.forProperty { t -> t.name } rules {
+            length(4)
+            mustBe { t -> t!!.startsWith("J") }
+            equal("John")
+        } onError {
+            errorMessage("fail")
+        }
         validator.strategy = ValidationStrategy.FULL
 
         testObject.name = "Patrick"

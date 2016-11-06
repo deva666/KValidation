@@ -16,12 +16,19 @@ limitations under the License.
 
 package com.markodevcic.kvalidation.validators
 
-internal class EqualValidator(private val other: Any?) : PropertyValidatorBase() {
+internal class RangeValidator(private val min: Number, private val max: Number) : PropertyValidatorBase() {
+
     override fun isValid(result: Any?): Boolean {
-        return result == other
+        if (result is Number) {
+            val resultDouble = result.toDouble()
+            return resultDouble >= min.toDouble() && resultDouble <= max.toDouble()
+        } else if (result == null) {
+            return true
+        }
+        return false
     }
 
     override fun toString(): String {
-        return "Equality validator, expected equal to: $other"
+        return "Range validator, expected to be between $min and $max"
     }
 }

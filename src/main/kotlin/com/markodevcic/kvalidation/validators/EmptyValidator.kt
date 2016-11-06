@@ -14,11 +14,20 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package com.markodevcic.kvalidation
+package com.markodevcic.kvalidation.validators
 
-import com.markodevcic.kvalidation.validators.Validator
-import java.util.*
+internal class EmptyValidator : PropertyValidatorBase() {
+    override fun isValid(result: Any?): Boolean {
+        if (result == null) {
+            return true
+        } else if (result is Iterable<*>) {
+            return !result.any()
+        } else {
+            return false
+        }
+    }
 
-class ValueContext<in T, out TFor>(val valueFactory: (T) -> TFor) {
-    val validators = ArrayList<Validator>()
+    override fun toString(): String {
+        return "Empty validator"
+    }
 }

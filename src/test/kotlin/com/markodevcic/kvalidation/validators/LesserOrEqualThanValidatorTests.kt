@@ -12,7 +12,7 @@ class LesserOrEqualThanValidatorTests {
         val testObject = TestObject()
         val validator = TestObjectValidator(testObject)
 
-        validator.newRule { t -> t.position }
+        validator.forProperty { t -> t.position }
                 .lte(200)
 
         testObject.position = 200
@@ -29,7 +29,7 @@ class LesserOrEqualThanValidatorTests {
         val testObject = TestObject()
         val validator = TestObjectValidator(testObject)
 
-        validator.newRule { t -> t.weight }
+        validator.forProperty { t -> t.weight }
                 .lte(100.0)
 
         testObject.weight = 100.0
@@ -41,14 +41,4 @@ class LesserOrEqualThanValidatorTests {
         Assert.assertFalse(result.isValid)
     }
 
-    @Test(expected = IllegalArgumentException::class)
-    fun testInvalidArgument() {
-        val testObject = TestObject()
-        val validator = TestObjectValidator(testObject)
-
-        validator.newRule { t -> t.name }
-                .lte(200)
-
-        val result = validator.validate()
-    }
 }

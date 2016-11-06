@@ -16,6 +16,9 @@ limitations under the License.
 
 package com.markodevcic.kvalidation.errors
 
-class ValidationError(val message: String, val level: ErrorLevel, val errorCode: Int? = null) {
+class ValidationError(val message: String, val level: ErrorLevel, val errorCode: Int? = null, val debugMessage: String) {
 
+    override fun toString(): String {
+        return debugMessage
+    }
 }
