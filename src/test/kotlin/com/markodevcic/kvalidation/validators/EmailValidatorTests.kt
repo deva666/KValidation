@@ -2,6 +2,7 @@ package com.markodevcic.kvalidation.validators
 
 import com.markodevcic.kvalidation.TestObject
 import com.markodevcic.kvalidation.TestObjectValidator
+import com.markodevcic.kvalidation.rules
 import org.junit.Assert
 import org.junit.Test
 

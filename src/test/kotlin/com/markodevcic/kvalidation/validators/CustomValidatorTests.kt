@@ -2,6 +2,7 @@ package com.markodevcic.kvalidation.validators
 
 import com.markodevcic.kvalidation.TestObject
 import com.markodevcic.kvalidation.TestObjectValidator
+import com.markodevcic.kvalidation.rules
 import org.junit.Assert
 import org.junit.Test
 
@@ -11,7 +12,7 @@ class CustomValidatorTests {
         val testObject = TestObject()
         val validator = TestObjectValidator(testObject)
 
-        validator.forPropertyBuilder { t -> t.position }
+        validator.forProperty { t -> t.position }
                 .mustBe { v -> v == 10 }
 
         testObject.position = 1

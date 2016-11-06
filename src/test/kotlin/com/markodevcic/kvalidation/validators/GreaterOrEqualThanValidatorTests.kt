@@ -12,7 +12,7 @@ class GreaterOrEqualThanValidatorTests {
         val testObject = TestObject()
         val validator = TestObjectValidator(testObject)
 
-        validator.forPropertyBuilder { t -> t.position }
+        validator.forProperty { t -> t.position }
                 .gte(100)
 
         testObject.position = 100
@@ -29,7 +29,7 @@ class GreaterOrEqualThanValidatorTests {
         val testObject = TestObject()
         val validator = TestObjectValidator(testObject)
 
-        validator.forPropertyBuilder { t -> t.weight }
+        validator.forProperty { t -> t.weight }
                 .gte(100.0)
 
         testObject.weight = 100.0

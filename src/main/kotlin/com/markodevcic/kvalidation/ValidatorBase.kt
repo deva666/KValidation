@@ -31,48 +31,26 @@ abstract class ValidatorBase<T>(private val consumer: T) where T : Any {
     var strategy = ValidationStrategy.FULL
 
     /**
-     * Creates a rule builder object for defined property, better suited for use in Java
+     * Creates a rule builder object for defined property
      * @sample <
-     *          validator.forPropertyBuilder(SomeObject::getName)
+     *          //Java
+     *          validator.forProperty(SomeObject::getName)
      *              .notNull()
      *              .equal("John")
+     *
+     *          //Kotlin
+     *          validator.forProperty { t -> t.name } rules {
+     *              notNull()
+     *              equal("John")
+     *          }
      * >
      * @param valueFactory lambda that defines a property from the object being validated
      * @return [RuleBuilder] object
      */
-    fun <TFor : Any> forPropertyBuilder(valueFactory: (T) -> TFor?): RuleBuilder<T, TFor> {
+    fun <TFor : Any> forProperty(valueFactory: (T) -> TFor?): RuleBuilder<T, TFor> {
         val propertyContext = PropertyContext(valueFactory)
         contexts.add(propertyContext)
         return RuleBuilder(propertyContext)
-    }
-
-    /**
-     * Creates a rule setter object for defined property, better suited for use in Kotlin
-     * @sample <
-     *          validator.forProperty { t -> t.position } rules {
-     *                  notEqual(7)
-     *                  lte(10)
-     *                  gte(5)
-     *          }
-     *    >
-     * @param valueFactory lambda that defines a property from the object being validated
-     * @return [RuleSetter] object
-     */
-    fun <TFor : Any> forProperty(valueFactory: (T) -> TFor?): Creator<T, TFor> {
-        val propertyContext = PropertyContext(valueFactory)
-        contexts.add(propertyContext)
-        return Creator(propertyContext)
-    }
-
-    class Creator<T, TFor>(private val propertyContext: PropertyContext<T, TFor>) {
-        infix fun rules(ruleInit: RuleSetter<T, TFor>.() -> Unit): Creator<T, TFor> {
-            ruleInit(RuleSetter(propertyContext))
-            return this
-        }
-
-        infix fun onError(onErrorInit: OnErrorSetter<T, TFor>.() -> Unit) {
-            onErrorInit(OnErrorSetter(propertyContext))
-        }
     }
 
     /**
@@ -103,4 +81,13 @@ abstract class ValidatorBase<T>(private val consumer: T) where T : Any {
                 ?: debugMessage, propertyValidator.errorLevel, propertyValidator.errorCode, debugMessage)
         return error
     }
+}
+
+infix fun <T, TFor> RuleBuilder<T, TFor>.rules(ruleInit: RuleBuilder<T, TFor>.() -> Unit): RuleBuilder<T, TFor> {
+    ruleInit.invoke(this)
+    return this
+}
+
+infix fun <T, TFor> RuleBuilder<T, TFor>.onError(onErrorInit: OnErrorBuilder<T, TFor>.() -> Unit) {
+    onErrorInit(this.onError())
 }

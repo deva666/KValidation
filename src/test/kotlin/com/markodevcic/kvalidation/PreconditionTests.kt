@@ -10,7 +10,7 @@ class PreconditionTests {
         val testObject = TestObject()
         val validator = TestObjectValidator(testObject)
 
-        validator.forPropertyBuilder { t -> t.name }
+        validator.forProperty { t -> t.name }
                 .mustBe { v -> v!!.length == 5 }
                 .whenIs { t -> t.name != null }
 
@@ -63,7 +63,7 @@ class PreconditionTests {
         val testObject = TestObject()
         val validator = TestObjectValidator(testObject)
 
-        validator.forPropertyBuilder { t -> t.name }
+        validator.forProperty { t -> t.name }
                 .mustBe { v -> v!!.length == 0 }
                 .whenIs { t -> t.position == 0 }
                 .mustBe { v -> v!!.length == 1 }
@@ -110,7 +110,7 @@ class PreconditionTests {
         val testObject = TestObject()
         val validator = TestObjectValidator(testObject)
 
-        validator.forPropertyBuilder { t -> t.name }
+        validator.forProperty { t -> t.name }
                 .mustBe { v -> v != null && v.length == 5 }
                 .length(10)
                 .whenIsOnAll { t -> t.position == 1 }

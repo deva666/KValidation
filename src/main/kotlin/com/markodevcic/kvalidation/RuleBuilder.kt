@@ -20,11 +20,11 @@ import com.markodevcic.kvalidation.validators.*
 import java.util.regex.Pattern
 
 @Suppress("UNCHECKED_CAST")
-open class RuleBuilder<T, TFor>(protected val propertyContext: PropertyContext<T, TFor>) {
+class RuleBuilder<T, TFor>(val propertyContext: PropertyContext<T, TFor>) {
 
     private var currentPropertyValidator: PropertyValidator? = null
 
-    protected fun setValidator(validator: PropertyValidator) {
+    private fun setValidator(validator: PropertyValidator) {
         currentPropertyValidator = validator
         propertyContext.validators.add(validator)
     }
