@@ -74,6 +74,13 @@ abstract class ValidatorBase<T>(private val consumer: T) where T : Any {
         return result
     }
 
+    /**
+     * Removes all defined rules
+     */
+    fun clearAll() {
+        contexts.clear()
+    }
+
     private fun <TFor : Any> createValidationError(propertyValidator: PropertyValidator, value: TFor?, propertyName: String?): ValidationError {
         val debugMessage = "$propertyValidator, received value: ${value ?: "null"}" +
                 if (propertyName != null) ", property name: $propertyName" else ""
@@ -90,4 +97,8 @@ infix fun <T, TFor> RuleBuilder<T, TFor>.rules(ruleInit: RuleBuilder<T, TFor>.()
 
 infix fun <T, TFor> RuleBuilder<T, TFor>.onError(onErrorInit: OnErrorBuilder<T, TFor>.() -> Unit) {
     onErrorInit(this.onError())
+}
+
+fun <T : Any> ValidatorBase<T>.initRules(initializer: ValidatorBase<T>.() -> Unit) {
+    initializer(this)
 }
