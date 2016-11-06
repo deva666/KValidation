@@ -13,7 +13,7 @@ package com.markodevcic.kvalidation
 class InnerValidator<T>(instance: T) : ValidatorBase<T>(instance) where T : Any {
 }
 
-infix fun <T> InnerValidator<T>.setRules(initializer: InnerValidator<T>.() -> Unit) : InnerValidator<T> where T : Any {
+infix fun <T> InnerValidator<T>.setRules(initializer: InnerValidator<T>.() -> Unit): InnerValidator<T> where T : Any {
     initializer(this)
     return this
 }

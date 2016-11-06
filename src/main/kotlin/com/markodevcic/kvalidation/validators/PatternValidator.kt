@@ -2,7 +2,7 @@ package com.markodevcic.kvalidation.validators
 
 import java.util.regex.Pattern
 
-open internal class PatternValidator(private val pattern: Pattern) : PropertyValidatorBase(){
+open internal class PatternValidator(private val pattern: Pattern) : PropertyValidatorBase() {
 
     override fun isValid(result: Any?): Boolean {
         if (result == null) {
