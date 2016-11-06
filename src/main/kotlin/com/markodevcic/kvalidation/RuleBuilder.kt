@@ -106,6 +106,11 @@ class RuleBuilder<T, TFor>(val propertyContext: PropertyContext<T, TFor>) {
         return this
     }
 
+    fun empty(): RuleBuilder<T, TFor> {
+        setValidator(EmptyValidator())
+        return this
+    }
+
     fun email(): RuleBuilder<T, TFor> {
         setValidator(EmailValidator())
         return this

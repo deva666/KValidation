@@ -15,7 +15,6 @@ class EmailValidatorTests{
         validator.forProperty { t -> t.name } rules {
             email()
         }
-
         testObject.name = "david@gmail.com"
 
         val result = validator.validate()
