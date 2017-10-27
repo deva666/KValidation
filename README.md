@@ -1,4 +1,4 @@
-# KValidation #
+# KValidation #  [![Build Status](https://travis-ci.org/deva666/KValidation.svg?branch=master)](https://travis-ci.org/deva666/KValidation)
 
 ### Validation library for JVM languages ###
 
