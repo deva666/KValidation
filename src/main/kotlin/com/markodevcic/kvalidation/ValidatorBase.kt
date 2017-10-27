@@ -53,7 +53,7 @@ abstract class ValidatorBase<T>(private val consumer: T) : Validator where T : A
         contexts.forEach { context ->
             val value = context.valueFactory(consumer)
             context.validators.forEach { validator ->
-                if (validator.precondition?.invoke(consumer) ?: true && !validator.isValid(value)) {
+                if (validator.precondition?.invoke(consumer) != false && !validator.isValid(value)) {
                     val error = createValidationError(validator, value, context.propertyName)
                     result.validationErrors.add(error)
                     if (strategy == ValidationStrategy.STOP_ON_FIRST) {
@@ -75,9 +75,8 @@ abstract class ValidatorBase<T>(private val consumer: T) : Validator where T : A
     private fun <TProperty : Any> createValidationError(propertyValidator: PropertyValidator, value: TProperty?, propertyName: String?): ValidationError {
         val debugMessage = "$propertyValidator, received value: ${value ?: "null"}" +
                 if (propertyName != null) ", property name: $propertyName" else ""
-        val error = ValidationError(propertyValidator.messageBuilder?.getErrorMessage()
+        return ValidationError(propertyValidator.messageBuilder?.getErrorMessage()
                 ?: debugMessage, propertyValidator.errorLevel, propertyValidator.errorCode, debugMessage)
-        return error
     }
 }
 
