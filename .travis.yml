@@ -1,2 +1,2 @@
-language: kotlin
+language: java
 sudo: false
