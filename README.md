@@ -1,4 +1,6 @@
-# KValidation [![Build Status](https://travis-ci.org/deva666/KValidation.svg?branch=master)](https://travis-ci.org/deva666/KValidation)
+[![Build Status](https://travis-ci.org/deva666/KValidation.svg?branch=master)](https://travis-ci.org/deva666/KValidation) [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+
+# KValidation 
 
 ### Validation library for Kotlin/Java ###
 
