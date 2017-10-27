@@ -1,18 +1,13 @@
-# KValidation #  [![Build Status](https://travis-ci.org/deva666/KValidation.svg?branch=master)](https://travis-ci.org/deva666/KValidation)
+# KValidation [![Build Status](https://travis-ci.org/deva666/KValidation.svg?branch=master)](https://travis-ci.org/deva666/KValidation)
 
-### Validation library for JVM languages ###
-
-* simple - not bloated with features
-* fast - no reflection
-* readable
-* written in Kotlin
+### Validation library for Kotlin/Java ###
 
 ---------------
 ### Example: ###
 
-In Java
+Java
 
-```java
+```
 Person person = new Person();
 PersonValidator validator = new PersonValidator(person);
 
