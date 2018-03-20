@@ -7,7 +7,7 @@
 ---------------
 ### Example: ###
 
-Create the validator class by extendind the generic `ValidatorBase<T>` class.
+Create the validator class by extending the generic `ValidatorBase<T>` class.
 
 ```
 class UserValidator extends ValidatorBase<User> {
