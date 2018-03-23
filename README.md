@@ -5,6 +5,25 @@
 ### Validation library for Kotlin/Java ###
 
 ---------------
+
+### Installation:
+Add `jcenter` repository
+
+Gradle:
+```
+compile 'com.markodevcic.kvalidation:KValidation:1.0.0'
+```
+
+Maven:
+```
+<dependency>
+  <groupId>com.markodevcic.kvalidation</groupId>
+  <artifactId>KValidation</artifactId>
+  <version>1.0.0</version>
+  <type>pom</type>
+</dependency>
+```
+
 ### Example: ###
 
 Create the validator class by extending the generic `ValidatorBase<T>` class.
