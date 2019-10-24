@@ -11,7 +11,7 @@ Add `jcenter` repository
 
 Gradle:
 ```
-compile 'com.markodevcic.kvalidation:KValidation:1.0.0'
+implementation 'com.markodevcic.kvalidation:KValidation:1.0.0'
 ```
 
 Maven:
